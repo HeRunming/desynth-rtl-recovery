@@ -52,6 +52,16 @@ Legacy HAL/LLM experiments still contain machine-specific paths and separate dep
 
 The research goal is verified recovery of higher-level semantics from anonymized real netlists using a strong LLM, a structured harness, and EDA tools. The Config A repair is a reusable verification case, not evidence of autonomous anonymous recovery.
 
-The [September 18 research review](docs/HARNESS_RESEARCH_2026-09-18.md) audits the current gaps and available tools. The [Harness v2 proposal](docs/HARNESS_V2_DESIGN.md) starts with a complete residual implementation, adds bounded structural queries and competing semantic candidates, and accepts replacements only with proof and final emitted-RTL checks. This is a design proposal, not an implemented pipeline.
+The [September 18 research review](docs/HARNESS_RESEARCH_2026-09-18.md) audits the current gaps and available tools. The [Harness v2 proposal](docs/HARNESS_V2_DESIGN.md) starts with a complete residual implementation, adds bounded structural queries and competing semantic candidates, and accepts replacements only with proof and final emitted-RTL checks. The bounded M0/M1 implementation now emits complete residual RTL, replaces proven full adders with actual arithmetic, and checks the emitted design with Yosys SAT plus ABC CEC under an explicit state-preserving contract. See the [implementation and limitations report](docs/HARNESS_M0_M1_REPORT.md).
 
-Begin with lossless import/export and a deterministic proof-gated recovery loop, then add the LLM and evaluate its incremental gain on anonymized real designs with matched budgets. External suites require source/library/license qualification; GenEDA Task 3 is not yet a verified available input. See the earlier [benchmark review](docs/BENCHMARK_REVIEW.md) for unresolved dataset provenance.
+The current development campaign passes whole-design checks on four designs across three anonymization seeds; FIFO is explicitly unsupported due to memory and undefined-value semantics. It is not an external benchmark or evidence of LLM gain. Next, add bounded HAL queries and the LLM to the same proof-gated loop, then evaluate incremental gain on anonymized real designs with matched budgets. External suites require source/library/license qualification; GenEDA Task 3 is not yet a verified available input. See the earlier [benchmark review](docs/BENCHMARK_REVIEW.md) for unresolved dataset provenance.
+
+## Reproduce the anonymous M1 loop
+
+```sh
+# Set YOSYS and ABC as above; no LLM credentials needed.
+python3 -B -m unittest discover -s tests -v
+python3 -B scripts/run_harness_m1.py --out /tmp/harness-m1-run --seeds 17 42 99
+```
+
+The default campaign records 12 proven runs and 3 FIFO admission rejections, so its aggregate exit status is nonzero. See each report rather than treating unsupported cases as success. `scripts/evaluate_harness_m1.py` is the older annotation-only experiment.

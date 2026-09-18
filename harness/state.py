@@ -1,11 +1,5 @@
-"""State/event extraction from canonical Yosys cells.
-
-This module is intentionally conservative.  A missing or unfamiliar event
-semantic is an explicit unsupported condition, never a guessed synchronous
-posedge/reset model.
-"""
+"""Explicit state/event semantics for the supported Yosys primitives."""
 from __future__ import annotations
-
 from dataclasses import dataclass, asdict
 from typing import Any
 
@@ -15,17 +9,17 @@ class StateElement:
     cell: str
     kind: str
     q_bits: tuple[int, ...]
-    d_bits: tuple[int, ...]
+    d_bits: tuple[Any, ...]
     clock_bits: tuple[int, ...]
     clock_polarity: int
-    reset_bits: tuple[int, ...] = ()
+    reset_bits: tuple[Any, ...] = ()
     reset_polarity: int | None = None
-    reset_value: tuple[Any, ...] = ()
-    enable_bits: tuple[int, ...] = ()
+    reset_value: tuple[str, ...] = ()
+    enable_bits: tuple[Any, ...] = ()
     enable_polarity: int | None = None
-    initial_value: tuple[Any, ...] = ()
+    initial_value: tuple[str, ...] = ()
 
-    def as_dict(self) -> dict[str, Any]:
+    def as_dict(self):
         return asdict(self)
 
 
@@ -34,59 +28,77 @@ class StateModel:
     elements: tuple[StateElement, ...]
     unsupported: tuple[dict[str, str], ...]
 
-    def as_dict(self) -> dict[str, Any]:
-        domains: dict[str, list[str]] = {}
-        for e in self.elements:
-            key = f"{e.clock_bits}:{e.clock_polarity}"
-            domains.setdefault(key, []).append(e.cell)
+    def as_dict(self):
+        domains = {}
+        for element in self.elements:
+            domains.setdefault(f"{element.clock_bits}:{element.clock_polarity}", []).append(element.cell)
         return {"elements": [e.as_dict() for e in self.elements], "unsupported": list(self.unsupported), "clock_domains": domains}
 
 
-def _int_param(cell: dict, name: str, default: int) -> int:
-    raw = cell.get("parameters", {}).get(name, str(default))
-    if isinstance(raw, int): return raw
-    if isinstance(raw, str):
-        try: return int(raw, 2) if set(raw) <= {"0", "1"} else int(raw, 0)
-        except ValueError: return default
-    return default
+def initial_bits(module):
+    """Yosys init lives on netnames, MSB first; maps are LSB-indexed."""
+    result = {}; errors = []
+    for name, net in module.get('netnames', {}).items():
+        raw = net.get('attributes', {}).get('init')
+        if raw is None: continue
+        bits = net.get('bits', [])
+        if not isinstance(raw, str) or len(raw) != len(bits) or set(raw) - set('01x'):
+            errors.append(f'invalid initialization {name}'); continue
+        for bit, value in zip(bits, reversed(raw)):
+            if not isinstance(bit, int):
+                errors.append(f'initialization on constant {name}'); continue
+            if value == 'x': continue
+            if bit in result and result[bit] != value: errors.append(f'conflicting initialization bit {bit}')
+            result[bit] = value
+    return result, errors
 
 
-def extract_state_model(graph) -> StateModel:
-    elements: list[StateElement] = []
-    unsupported: list[dict[str, str]] = []
-    supported = {"$dff", "$adff", "$dffe", "$adffe"}
-    for name, cell in graph.module().get("cells", {}).items():
-        kind = cell.get("type", "")
-        if kind.startswith("$") and any(token in kind for token in ("ff", "latch", "tribuf")) and kind not in supported:
-            unsupported.append({"cell": name, "type": kind, "reason": "unsupported sequential or tri-state primitive"})
-            continue
+def parameter_int(cell, name):
+    raw = cell.get('parameters', {}).get(name)
+    if isinstance(raw, int) and not isinstance(raw, bool): return raw
+    if isinstance(raw, str) and raw and not set(raw) - set('01'): return int(raw, 2)
+    raise ValueError(f'missing or nonbinary parameter {name}')
+
+
+def extract_state_model(graph):
+    module = graph.module(); elements = []; unsupported = []
+    init, errors = initial_bits(module)
+    unsupported.extend({'cell': '', 'type': '', 'reason': e} for e in errors)
+    supported = {'$dff', '$adff', '$dffe', '$adffe'}
+    q_all = set()
+    for name, cell in module.get('cells', {}).items():
+        kind = cell.get('type', '')
         if kind not in supported:
+            if not kind.startswith('$') or any(x in kind.lower() for x in ('ff', 'latch', 'tribuf', 'mem')):
+                unsupported.append({'cell': name, 'type': kind, 'reason': 'unsupported state/library primitive'})
             continue
-        conn = cell.get("connections", {})
-        required = ["D", "Q", "CLK"]
-        if kind in {"$adff", "$adffe"}: required.append("ARST")
-        if kind in {"$dffe", "$adffe"}: required.append("EN")
-        missing = [p for p in required if p not in conn]
-        if missing:
-            unsupported.append({"cell": name, "type": kind, "reason": "missing pins: " + ",".join(missing)})
-            continue
-        initial = tuple(cell.get("attributes", {}).get("init", [])) if isinstance(cell.get("attributes", {}).get("init"), list) else ()
-        reset = tuple(conn.get("ARST", []))
-        enable = tuple(conn.get("EN", []))
-        elements.append(StateElement(
-            cell=name, kind=kind, q_bits=tuple(conn["Q"]), d_bits=tuple(conn["D"]),
-            clock_bits=tuple(conn["CLK"]), clock_polarity=_int_param(cell, "CLK_POLARITY", 1),
-            reset_bits=reset, reset_polarity=_int_param(cell, "ARST_POLARITY", 1) if reset else None,
-            reset_value=tuple(cell.get("parameters", {}).get("ARST_VALUE", [])) if reset else (),
-            enable_bits=enable, enable_polarity=_int_param(cell, "EN_POLARITY", 1) if enable else None,
-            initial_value=initial,
-        ))
-    return StateModel(tuple(elements), tuple(unsupported))
+        try:
+            conn = cell['connections']; q = conn['Q']; d = conn['D']; clk = conn['CLK']
+            width = parameter_int(cell, 'WIDTH'); edge = parameter_int(cell, 'CLK_POLARITY')
+            if width < 1 or len(q) != width or len(d) != width or len(clk) != 1 or edge not in (0,1):
+                raise ValueError('invalid state widths/clock polarity')
+            if any(not isinstance(b, int) or b < 2 for b in q+clk): raise ValueError('invalid Q/clock bits')
+            if len(set(q)) != len(q) or q_all.intersection(q): raise ValueError('duplicate state bit')
+            q_all.update(q)
+            reset = (); reset_value = (); polarity = None; enable = (); en_polarity = None
+            if kind in {'$adff', '$adffe'}:
+                reset = tuple(conn['ARST']); polarity = parameter_int(cell, 'ARST_POLARITY')
+                raw = cell['parameters']['ARST_VALUE']
+                if len(reset) != 1 or polarity not in (0,1) or not isinstance(raw,str) or len(raw)!=width or set(raw)-set('01'):
+                    raise ValueError('invalid asynchronous reset model')
+                reset_value = tuple(reversed(raw))
+            if kind in {'$dffe', '$adffe'}:
+                enable = tuple(conn['EN']); en_polarity = parameter_int(cell, 'EN_POLARITY')
+                if len(enable)!=1 or en_polarity not in (0,1): raise ValueError('invalid enable model')
+            elements.append(StateElement(name,kind,tuple(q),tuple(d),tuple(clk),edge,reset,polarity,reset_value,enable,en_polarity,tuple(init.get(b,'x') for b in q)))
+        except (KeyError, ValueError, TypeError) as exc:
+            unsupported.append({'cell':name,'type':kind,'reason':str(exc)})
+    if set(init)-q_all:
+        unsupported.append({'cell':'','type':'','reason':'initialization on nonstate bits'})
+    return StateModel(tuple(elements),tuple(unsupported))
 
 
-def require_supported_state(graph) -> StateModel:
+def require_supported_state(graph):
     model = extract_state_model(graph)
-    if model.unsupported:
-        details = "; ".join(f"{x['cell']}:{x['type']} ({x['reason']})" for x in model.unsupported[:5])
-        raise ValueError("unsupported state model: " + details)
+    if model.unsupported: raise ValueError('unsupported state model: '+ '; '.join(x['reason'] for x in model.unsupported))
     return model

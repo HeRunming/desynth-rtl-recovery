@@ -9,7 +9,7 @@ def state_json(kind="$dff"):
         "type": kind,
         "port_directions": {"D": "input", "Q": "output", "CLK": "input"},
         "connections": {"D": [10], "Q": [11], "CLK": [12]},
-        "parameters": {"CLK_POLARITY": "1"},
+        "parameters": {"CLK_POLARITY": "1", "WIDTH": "1"},
     }
     if kind == "$adff":
         cell["port_directions"]["ARST"] = "input"; cell["connections"]["ARST"] = [13]

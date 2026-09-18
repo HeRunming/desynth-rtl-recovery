@@ -1,5 +1,7 @@
 import copy
 import json
+import os
+import stat
 import tempfile
 import unittest
 import shutil
@@ -7,25 +9,14 @@ from pathlib import Path
 
 from harness.candidate import Candidate
 from harness.detect import propose_full_adders
+from harness.emit import emit_residual, verify_residual_export
 from harness.ir import SourceGraph, sha256_json
 from harness.proof import ProofStatus, prove_abc, prove_exhaustive
 from harness.recovery import RecoveryRevision
 
 
 def full_adder_json():
-    # Deliberately opaque instance/net names.  This is also the smallest
-    # deterministic structural detector fixture: two XOR, two AND, one OR.
-    cells = {
-        "u_x1": {"type": "$xor", "port_directions": {"A": "input", "B": "input", "Y": "output"}, "connections": {"A": [10], "B": [11], "Y": [20]}},
-        "u_x2": {"type": "$xor", "port_directions": {"A": "input", "B": "input", "Y": "output"}, "connections": {"A": [20], "B": [12], "Y": [21]}},
-        "u_a1": {"type": "$and", "port_directions": {"A": "input", "B": "input", "Y": "output"}, "connections": {"A": [10], "B": [11], "Y": [22]}},
-        "u_a2": {"type": "$and", "port_directions": {"A": "input", "B": "input", "Y": "output"}, "connections": {"A": [20], "B": [12], "Y": [23]}},
-        "u_or": {"type": "$or", "port_directions": {"A": "input", "B": "input", "Y": "output"}, "connections": {"A": [22], "B": [23], "Y": [24]}},
-    }
-    return {"modules": {"opaque_top": {"ports": {
-        "in_a": {"direction": "input", "bits": [10]}, "in_b": {"direction": "input", "bits": [11]}, "in_c": {"direction": "input", "bits": [12]},
-        "sum_out": {"direction": "output", "bits": [21]}, "carry_out": {"direction": "output", "bits": [24]},
-    }, "cells": cells, "netnames": {}}}}
+    return json.loads((Path(__file__).resolve().parents[1] / "examples/harness/full_adder.json").read_text())
 
 
 class HarnessM0M1(unittest.TestCase):
@@ -41,6 +32,25 @@ class HarnessM0M1(unittest.TestCase):
         for name in ("opaque_top", "u_x1", "u_or", "sum_out"):
             self.assertNotIn(name, text)
         self.assertNotEqual(self.graph.source_hash, sha256_json(public1))
+        self.graph.data["modules"]["opaque_top"]["cells"]["u_x1"]["type"] = "$and"
+        self.assertEqual(propose_full_adders(self.graph)[0].operation, "full_adder")
+
+    def test_anonymization_preserves_constants(self):
+        data = full_adder_json()
+        data["modules"]["opaque_top"]["cells"]["u_const"] = {
+            "type": "$and", "port_directions": {"A": "input", "B": "input", "Y": "output"},
+            "connections": {"A": ["0"], "B": [10], "Y": [30]},
+        }
+        graph = SourceGraph.from_yosys_json(data, "opaque_top")
+        public, _ = graph.anonymize(seed=3, hide_ports=True)
+        const_cell = next(c for c in public["modules"]["top_0"]["cells"].values() if c["connections"].get("A") == ["0"])
+        self.assertEqual(const_cell["connections"]["A"], ["0"])
+
+    def test_anonymization_remaps_orphan_netname_bits(self):
+        data = full_adder_json(); data["modules"]["opaque_top"]["netnames"] = {"orphan": {"bits": [999]}}
+        graph = SourceGraph.from_yosys_json(data, "opaque_top")
+        public, _ = graph.anonymize(seed=3, hide_ports=True)
+        self.assertNotIn("999", json.dumps(public))
 
     def test_detector_and_proof_accept_full_adder(self):
         candidates = propose_full_adders(self.graph)
@@ -48,6 +58,17 @@ class HarnessM0M1(unittest.TestCase):
         result = prove_exhaustive(self.graph, candidates[0])
         self.assertEqual(result.status, ProofStatus.PROVEN)
         self.assertEqual(result.checked_cases, 8)
+
+    @unittest.skipUnless(Path("/Users/blackbox/try_hai/oss-cad-suite/bin/yosys").is_file(), "Yosys toolchain unavailable")
+    def test_lossless_residual_emit_is_reimport_equivalent(self):
+        with tempfile.TemporaryDirectory() as td:
+            revision = RecoveryRevision(self.graph)
+            rtl = emit_residual(revision, td)
+            ok, log = verify_residual_export(revision, rtl, artifact_dir=Path(td) / "cec")
+            self.assertTrue(ok, log[-1000:])
+            manifest = json.loads((Path(td) / "manifest.json").read_text())
+            self.assertTrue(manifest["emitted_rtl"])
+            self.assertEqual(manifest["verification_scope"], "source_graph_export_pending_check")
 
     @unittest.skipUnless(Path("/Users/blackbox/try_hai/oss-cad-suite/bin/yosys").is_file(), "Yosys toolchain unavailable")
     def test_abc_proof_backend_accepts_candidate(self):
@@ -69,8 +90,8 @@ class HarnessM0M1(unittest.TestCase):
         revision = RecoveryRevision(self.graph)
         self.assertEqual(revision.residual_manifest()["residual_cells"], 5)
         accepted = revision.accept(candidate, prove_exhaustive(self.graph, candidate))
-        self.assertEqual(accepted.residual_manifest()["replaced_cells"], 5)
-        self.assertEqual(accepted.residual_manifest()["residual_cells"], 0)
+        self.assertEqual(accepted.residual_manifest()["semantic_covered_cells"], 5)
+        self.assertEqual(accepted.residual_manifest()["residual_cells"], 5)
         with self.assertRaises(ValueError):
             accepted.accept(candidate, prove_exhaustive(self.graph, candidate))
         rolled = accepted.rollback()
@@ -85,6 +106,24 @@ class HarnessM0M1(unittest.TestCase):
     def test_source_hash_binding_rejects_stale_candidate(self):
         candidate = propose_full_adders(self.graph)[0]
         candidate.source_hash = "stale"
+        result = prove_exhaustive(self.graph, candidate)
+        self.assertEqual(result.status, ProofStatus.MODEL_ERROR)
+        empty = copy.deepcopy(candidate); empty.region_cells = ()
+        self.assertEqual(prove_exhaustive(self.graph, empty).status, ProofStatus.MODEL_ERROR)
+
+    @unittest.skipUnless(Path("/Users/blackbox/try_hai/oss-cad-suite/bin/yosys").is_file(), "Yosys toolchain unavailable")
+    def test_abc_nonzero_exit_is_not_proven(self):
+        candidate = propose_full_adders(self.graph)[0]
+        with tempfile.TemporaryDirectory() as td:
+            fake = Path(td) / "fake_abc"
+            fake.write_text("#!/bin/sh\necho 'Networks are equivalent.'\nexit 7\n")
+            fake.chmod(fake.stat().st_mode | stat.S_IXUSR)
+            result = prove_abc(self.graph, candidate, abc=str(fake), artifact_dir=Path(td) / "art")
+            self.assertNotEqual(result.status, ProofStatus.PROVEN)
+
+    def test_side_output_cannot_be_omitted(self):
+        candidate = propose_full_adders(self.graph)[0]
+        candidate.output_bits = (candidate.output_bits[0],)
         result = prove_exhaustive(self.graph, candidate)
         self.assertEqual(result.status, ProofStatus.MODEL_ERROR)
 

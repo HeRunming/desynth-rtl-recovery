@@ -14,7 +14,7 @@ class M1EvaluationTest(unittest.TestCase):
             row = evaluate(p, "opaque_top", 17)
             self.assertEqual(row["candidate_count"], 1)
             self.assertEqual(row["proven_count"], 1)
-            self.assertEqual(row["recovery"]["residual_cells"], 0)
+            self.assertEqual(row["recovery"]["unexplained_cells"], 0)
             self.assertTrue(row["recovery"]["cell_ownership_closed"])
 
 

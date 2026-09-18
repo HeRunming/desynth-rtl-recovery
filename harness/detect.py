@@ -1,72 +1,62 @@
-"""Deterministic, name-independent structural candidate detectors."""
+"""Bounded, name-independent scalar structural candidate discovery."""
 from __future__ import annotations
-
+from collections import defaultdict
 from .candidate import Candidate
 
 
-def _one_bit(cell: dict, pin: str) -> int | None:
-    bits = cell.get("connections", {}).get(pin, [])
-    return bits[0] if len(bits) == 1 and isinstance(bits[0], int) else None
+def _one_bit(cell, pin):
+    bits = cell.get('connections', {}).get(pin, [])
+    return bits[0] if len(bits) == 1 and type(bits[0]) is int else None
 
 
-def propose_full_adders(graph) -> list[Candidate]:
-    """Find XOR/XOR and AND/AND/OR full-adder motifs in a Yosys JSON graph.
+def propose_full_adders(graph, *, limit=1000):
+    """Index motifs by input sets, avoiding Cartesian whole-netlist scans.
 
-    Cell instance names and net IDs are used only as opaque identifiers.  The
-    detector does not inspect source attributes or port names.
+    All results remain untrusted candidates. Region boundary/side-output checks
+    and independent proof take place after discovery.
     """
-    cells = graph.module().get("cells", {})
-    by_type: dict[str, list[tuple[str, dict]]] = {}
+    cells = graph.module().get('cells', {})
+    pairs = defaultdict(list); xor_users = defaultdict(list); xors = []
     for name, cell in cells.items():
-        by_type.setdefault(cell.get("type", ""), []).append((name, cell))
-    xors = by_type.get("$xor", [])
-    ands = by_type.get("$and", [])
-    ors = by_type.get("$or", [])
-    out: list[Candidate] = []
-    for x1_name, x1 in xors:
-        x1_out = _one_bit(x1, "Y")
-        x1_in = tuple(sorted((_one_bit(x1, "A"), _one_bit(x1, "B"))))
-        if x1_out is None or None in x1_in:
-            continue
-        for x2_name, x2 in xors:
-            if x2_name == x1_name:
-                continue
-            x2_out = _one_bit(x2, "Y")
-            x2_a, x2_b = _one_bit(x2, "A"), _one_bit(x2, "B")
-            if x2_out is None or x1_out not in (x2_a, x2_b):
-                continue
-            cin = x2_b if x2_a == x1_out else x2_a
-            a, b = x1_in
-            if cin in (a, b, None):
-                continue
-            for a1_name, a1 in ands:
-                if set((_one_bit(a1, "A"), _one_bit(a1, "B"))) != {a, b}:
-                    continue
-                a1_out = _one_bit(a1, "Y")
-                if a1_out is None:
-                    continue
-                for a2_name, a2 in ands:
-                    if a2_name == a1_name or set((_one_bit(a2, "A"), _one_bit(a2, "B"))) != {cin, x1_out}:
-                        continue
-                    a2_out = _one_bit(a2, "Y")
-                    if a2_out is None:
-                        continue
-                    for or_name, org in ors:
-                        if set((_one_bit(org, "A"), _one_bit(org, "B"))) != {a1_out, a2_out}:
-                            continue
-                        carry = _one_bit(org, "Y")
-                        if carry is None:
-                            continue
-                        cells_used = tuple(sorted((x1_name, x2_name, a1_name, a2_name, or_name)))
-                        out.append(Candidate(
-                            candidate_id=f"fa_{x2_name}_{or_name}", source_hash=graph.source_hash,
-                            region_cells=cells_used, input_bits=(a, b, cin), output_bits=(x2_out, carry),
-                            operation="full_adder", evidence={"detector": "xor_and_or_motif", "shared": x1_out},
-                        ))
-    # Stable deduplication when the two inputs of a commutative cell were visited in reverse.
-    seen: set[tuple] = set(); unique = []
-    for c in out:
-        key = (c.region_cells, c.input_bits, c.output_bits)
-        if key not in seen:
-            seen.add(key); unique.append(c)
-    return unique
+        typ = cell.get('type')
+        if typ not in {'$xor','$and','$or'}: continue
+        a,b,y = (_one_bit(cell,p) for p in ('A','B','Y'))
+        if None in (a,b,y) or a==b: continue
+        pairs[(typ,frozenset((a,b)))].append((name,y))
+        if typ == '$xor':
+            item=(name,a,b,y); xors.append(item)
+            xor_users[a].append(item); xor_users[b].append(item)
+    result=[]; seen=set()
+    consumers=defaultdict(set); drivers={}
+    for name, cell in cells.items():
+        for pin, bits in cell.get('connections',{}).items():
+            for bit in bits:
+                if cell.get('port_directions',{}).get(pin)=='input': consumers[bit].add(name)
+                else: drivers[bit]=name
+    outputs={b for p in graph.module().get('ports',{}).values() if p['direction']=='output' for b in p['bits']}
+    for x1,a,b,mid in xors:
+        for x2,x,y,summ in xor_users[mid]:
+            cin = y if x==mid else x
+            if x1==x2 or cin in (a,b): continue
+            for and1,ab in pairs[('$and',frozenset((a,b)))]:
+                for and2,ac in pairs[('$and',frozenset((mid,cin)))]:
+                    for or1,carry in pairs[('$or',frozenset((ab,ac)))]:
+                        region=tuple(sorted((x1,x2,and1,and2,or1)))
+                        if len(set(region))!=5: continue
+                        key=(region,summ,carry)
+                        if key in seen: continue
+                        seen.add(key)
+                        region_set=set(region); keep=set(); stack=[]
+                        for name in region:
+                            bit=cells[name]['connections']['Y'][0]
+                            if bit not in (summ,carry) and (consumers[bit]-region_set or bit in outputs): stack.append(name)
+                        while stack:
+                            name=stack.pop()
+                            if name in keep: continue
+                            keep.add(name)
+                            for pin,bits in cells[name]['connections'].items():
+                                if cells[name]['port_directions'][pin]=='input':
+                                    stack.extend(drivers[bit] for bit in bits if drivers.get(bit) in region_set)
+                        result.append(Candidate(f'fa_{x2}_{or1}',graph.source_hash,region,(*sorted((a,b)),cin),(summ,carry),'full_adder',evidence={'detector':'xor_and_or_motif','shared':mid},retained_cells=tuple(sorted(keep))))
+                        if len(result)>=limit: return result
+    return result

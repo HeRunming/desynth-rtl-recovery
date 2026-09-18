@@ -2,7 +2,8 @@
 """Evaluate the deterministic M1 loop on prepared Yosys JSON designs.
 
 The script intentionally keeps the source graph and anonymized graph separate.
-It reports discovery/proof/ownership, not source-code recovery accuracy.
+It reports annotation-only discovery/proof/ownership, not emitted RTL or
+whole-design correctness. Use run_harness_m1.py for actual M1 evaluation.
 """
 from __future__ import annotations
 
@@ -36,6 +37,7 @@ def evaluate(path: Path, top: str | None, seed: int) -> dict:
                      "candidate_hash": candidate.candidate_hash})
     manifest = revision.residual_manifest()
     return {
+        "track": "annotation_only", "whole_design_proven": False,
         "input": str(path), "source": source.manifest(), "anonymous": anon.manifest(),
         "anonymization": {"seed": seed, "public_hash": private["public_hash"]},
         "candidate_count": len(rows), "proven_count": sum(x["status"] == "proven" for x in rows),
