@@ -50,4 +50,8 @@ Legacy HAL/LLM experiments still contain machine-specific paths and separate dep
 
 ## Next research steps
 
-Real benchmark expansion remains pending: begin with GenEDA Task 3 arithmetic designs, then IWLS/ITC sequential designs after confirming each suite's source and licensing. Measure functional recovery, proof success, wall time and resource use; PPA requires a fixed synthesis flow and constraints. See [benchmark review](docs/BENCHMARK_REVIEW.md).
+The research goal is verified recovery of higher-level semantics from anonymized real netlists using a strong LLM, a structured harness, and EDA tools. The Config A repair is a reusable verification case, not evidence of autonomous anonymous recovery.
+
+The [September 18 research review](docs/HARNESS_RESEARCH_2026-09-18.md) audits the current gaps and available tools. The [Harness v2 proposal](docs/HARNESS_V2_DESIGN.md) starts with a complete residual implementation, adds bounded structural queries and competing semantic candidates, and accepts replacements only with proof and final emitted-RTL checks. This is a design proposal, not an implemented pipeline.
+
+Begin with lossless import/export and a deterministic proof-gated recovery loop, then add the LLM and evaluate its incremental gain on anonymized real designs with matched budgets. External suites require source/library/license qualification; GenEDA Task 3 is not yet a verified available input. See the earlier [benchmark review](docs/BENCHMARK_REVIEW.md) for unresolved dataset provenance.
