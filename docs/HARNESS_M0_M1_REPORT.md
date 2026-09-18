@@ -9,13 +9,14 @@
 - `harness/detect.py`：不读取源名字的 XOR/AND/OR full-adder 结构候选器。它只提出候选，不签发正确性。
 - `harness/proof.py`：分类的 exhaustive proof 与 Yosys AIG + 标准 ABC CEC backend；保存反例、timeout、model/tool error 和日志句柄。
 - `harness/recovery.py`：只允许匹配 candidate hash 的 `proven` 候选进入新 revision；拒绝重叠 region；支持 rollback；导出完整 source graph、semantic overlay 和 ownership manifest。
+- `harness/state.py`：从 Yosys `$dff/$adff/$dffe/$adffe` 提取 clock edge、异步 reset 和 enable；未知 latch/tri-state/时序 primitive 进入 `unsupported`，不被猜测为单一 posedge 模型。
 - `harness/cli.py`：`summary`、`anonymize`、`detect`、`recover` 四个最小命令。
 
 这不是完整 RTL 行为 emitter，也没有声称已经支持任意 cell library、时钟/复位、latch、memory 或顺序等价。当前 recovery export 的正确性保证来自“完整 source graph + overlay”，而非把未恢复区域伪装成高层 RTL。
 
 ## 验证证据
 
-`tests/test_harness_m0_m1.py` 覆盖：
+`tests/test_harness_m0_m1.py` 和 `tests/test_state_model.py` 覆盖：
 
 - 相同 seed 的匿名化稳定；top/cell/port 原名字不会进入 public graph；
 - 结构候选在 8 个输入组合上穷举证明；
@@ -24,8 +25,9 @@
 - stale source hash 返回 model error；
 - 已接受候选不能重复集成或重叠集成；rollback 恢复完整 residual；
 - 导出 manifest 显式记录 source/replaced/residual cell ownership。
+- `$dff` 时钟事件、`$adff` 复位极性、`$dffe` enable，以及未知 latch 的 unsupported 门槛。
 
-当前仓库原有 `tests/test_repair_gate.py` 也继续通过。总计 **8 tests passed**。
+当前仓库原有 `tests/test_repair_gate.py` 也继续通过。总计 **11 tests passed**。
 
 另外使用 Yosys 将真实 `examples/counter/counter_netlist.v` 归一化后完成导入摘要和匿名化 smoke：38 cells、8 state cells、4 ports；匿名 public JSON 不含 `counter/count/enable/rst` 等原始名字。它还没有进入 full-adder detector，因为该设计没有对应组合 motif；这正是“可报告的未恢复 residual”，不是失败后丢逻辑。
 

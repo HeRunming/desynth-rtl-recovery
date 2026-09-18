@@ -74,11 +74,13 @@ class SourceGraph:
         }
 
     def manifest(self) -> dict[str, Any]:
+        from .state import extract_state_model
         return {
             "schema": self.graph_version,
             "top": self.top,
             "source_hash": self.source_hash,
             "counts": self.counts(),
+            "state_model": extract_state_model(self).as_dict(),
         }
 
     def copy_data(self) -> dict[str, Any]:
