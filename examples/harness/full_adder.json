@@ -1,0 +1,21 @@
+{
+  "modules": {
+    "opaque_top": {
+      "ports": {
+        "in_a": {"direction": "input", "bits": [10]},
+        "in_b": {"direction": "input", "bits": [11]},
+        "in_c": {"direction": "input", "bits": [12]},
+        "sum_out": {"direction": "output", "bits": [21]},
+        "carry_out": {"direction": "output", "bits": [24]}
+      },
+      "cells": {
+        "u_x1": {"type": "$xor", "port_directions": {"A": "input", "B": "input", "Y": "output"}, "connections": {"A": [10], "B": [11], "Y": [20]}},
+        "u_x2": {"type": "$xor", "port_directions": {"A": "input", "B": "input", "Y": "output"}, "connections": {"A": [20], "B": [12], "Y": [21]}},
+        "u_a1": {"type": "$and", "port_directions": {"A": "input", "B": "input", "Y": "output"}, "connections": {"A": [10], "B": [11], "Y": [22]}},
+        "u_a2": {"type": "$and", "port_directions": {"A": "input", "B": "input", "Y": "output"}, "connections": {"A": [20], "B": [12], "Y": [23]}},
+        "u_or": {"type": "$or", "port_directions": {"A": "input", "B": "input", "Y": "output"}, "connections": {"A": [22], "B": [23], "Y": [24]}}
+      },
+      "netnames": {}
+    }
+  }
+}
