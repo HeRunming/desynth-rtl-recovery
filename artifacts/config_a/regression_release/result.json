@@ -1,0 +1,83 @@
+{
+  "directed_compile": {
+    "argv": [
+      "/data/hrm/desynth/tools/oss-cad-suite/bin/iverilog",
+      "-g2012",
+      "-s",
+      "tb_directed_internal",
+      "-o",
+      "/data/hrm/desynth/work/big/regression_release/sim_directed",
+      "/data/hrm/desynth/work/big/tb_directed_internal.v",
+      "/data/hrm/desynth/work/big/pico_big_netlist.v",
+      "/data/hrm/desynth/work/big/pico_big_lift_mul_repaired.v",
+      "/data/hrm/desynth/work/big/cells_init.v"
+    ],
+    "rc": 0,
+    "elapsed_s": 39.277058124542236,
+    "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  "directed_run": {
+    "argv": [
+      "/data/hrm/desynth/tools/oss-cad-suite/bin/vvp",
+      "/data/hrm/desynth/work/big/regression_release/sim_directed"
+    ],
+    "rc": 0,
+    "elapsed_s": 7.275827884674072,
+    "log_sha256": "ce88dd7efc9cf5e249ca9145a23f50d5b59ce47db7877126db03ee967423aa3a"
+  },
+  "ports_50k_compile": {
+    "argv": [
+      "/data/hrm/desynth/tools/oss-cad-suite/bin/iverilog",
+      "-g2012",
+      "-s",
+      "tb_eq_big",
+      "-o",
+      "/data/hrm/desynth/work/big/regression_release/sim_ports_50k",
+      "/data/hrm/desynth/work/big/tb_eq_big.v",
+      "/data/hrm/desynth/work/big/pico_big_netlist.v",
+      "/data/hrm/desynth/work/big/pico_big_lift_mul_repaired.v",
+      "/data/hrm/desynth/work/big/cells_init.v"
+    ],
+    "rc": 0,
+    "elapsed_s": 36.67197871208191,
+    "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  "ports_50k_run": {
+    "argv": [
+      "/data/hrm/desynth/tools/oss-cad-suite/bin/vvp",
+      "/data/hrm/desynth/work/big/regression_release/sim_ports_50k"
+    ],
+    "rc": 0,
+    "elapsed_s": 142.13984155654907,
+    "log_sha256": "c8ddac5042c6b1e39b96e68a0455b76775294da2e5ab30395ebda9bede232a77"
+  },
+  "internal_compile": {
+    "argv": [
+      "/data/hrm/desynth/tools/oss-cad-suite/bin/iverilog",
+      "-g2012",
+      "-s",
+      "tb_source_internal",
+      "-o",
+      "/data/hrm/desynth/work/big/regression_release/sim_internal",
+      "/data/hrm/desynth/work/big/tb_source_internal.v",
+      "/data/hrm/desynth/work/big/pico_big_netlist.v",
+      "/data/hrm/desynth/work/big/pico_big_lift_mul_repaired.v",
+      "/data/hrm/desynth/work/big/cells_init.v"
+    ],
+    "rc": 0,
+    "elapsed_s": 37.024251222610474,
+    "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  "internal_run": {
+    "argv": [
+      "/data/hrm/desynth/tools/oss-cad-suite/bin/vvp",
+      "/data/hrm/desynth/work/big/regression_release/sim_internal"
+    ],
+    "rc": 0,
+    "elapsed_s": 12.234330415725708,
+    "log_sha256": "d1d317d0dbc6d20ba27687f2917284a6ebf835f3dc65e8f1994f6c18d7314db0"
+  },
+  "status": "passed",
+  "elapsed_s": 275.5124795436859,
+  "repaired_sha256": "621db42bcc2eb159b7129a97cb522cd9e9317517ffcdaf82b59db3a3a5b6ab9b"
+}

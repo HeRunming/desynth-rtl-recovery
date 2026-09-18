@@ -1,0 +1,82 @@
+{
+  "status": "passed",
+  "scope": "Config A fast-MUL rd[31:63] repair and requested regression acceptance",
+  "date": "2026-09-18",
+  "formal": {
+    "status": "proven",
+    "bits": [
+      31,
+      32,
+      33,
+      34,
+      35,
+      36,
+      37,
+      38,
+      39,
+      40,
+      41,
+      42,
+      43,
+      44,
+      45,
+      46,
+      47,
+      48,
+      49,
+      50,
+      51,
+      52,
+      53,
+      54,
+      55,
+      56,
+      57,
+      58,
+      59,
+      60,
+      61,
+      62,
+      63
+    ],
+    "whole_product_outputs": 64,
+    "elapsed_s": 16.038622617721558,
+    "proof": "mul_cec_v2/accepted_proof.json",
+    "sha256": "7750ef6d6db35950ed4adab9502d7bfb147bc96983a927fb2c270fd2e5f06ae4",
+    "engine": "ABC &cec with automatic CEC fallback"
+  },
+  "repaired_rtl": {
+    "path": "pico_big_lift_mul_repaired.v",
+    "sha256": "621db42bcc2eb159b7129a97cb522cd9e9317517ffcdaf82b59db3a3a5b6ab9b"
+  },
+  "regressions": {
+    "directed": {
+      "status": "passed",
+      "log": "directed_all_ff.log",
+      "sha256": "47c40f7afede387605c4484658db95ebe5c1bd4beafc7ddd75baa4771eaee863"
+    },
+    "ports_50k": {
+      "status": "passed",
+      "log": "verify_50k_final.log",
+      "sha256": "9dd7d26f5dc5a5c12d455d679d2fcd1bdd11a8a9c1f4895c0b4c31b61434a82f"
+    },
+    "internal": {
+      "status": "passed",
+      "log": "source_all_ff.log",
+      "sha256": "76da5c1992eadbf4ebc8f13897dfc688c409137d3a2945434544ca113c0c43d8"
+    }
+  },
+  "limits": [
+    "Whole CPU sequential formal equivalence is not claimed.",
+    "Real external benchmark campaigns and PPA measurements remain pending.",
+    "Archived raw-vs-lift internal failure used an X-filled oracle; source-FF-Q regression replaces that invalid reference.",
+    "Experimental &acec result was rejected after original-AIG counterexample replay; accepted proof is standard &cec."
+  ],
+  "packaged_replay": {
+    "proof": "proof_replay_release/accepted_proof.json",
+    "proof_status": "proven",
+    "regression": "regression_release/result.json",
+    "regression_status": "passed",
+    "regression_sha256": "c92fb0f5daa6c9e9a0ec320a565314b6bc9d1232106a5a4e3a2be5f3b3e0b7e0"
+  }
+}

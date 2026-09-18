@@ -1,0 +1,29 @@
+{
+  "top": "traffic",
+  "attempts": [
+    {
+      "attempt": 1,
+      "rtl": "module traffic(clk, rst, light);\n  input clk;\n  input rst;\n  output [1:0] light;\n\n  reg [1:0] state;\n  reg [7:0] timer;\n\n  wire timer_expired = (timer == 8'd0);\n\n  assign light = state;\n\n  always @(posedge clk) begin\n    if (rst) begin\n      state <= 2'b00;\n      timer <= 8'd20;\n    end else begin\n      if (timer_expired) begin\n        case (state)\n          2'b00: begin\n            state <= 2'b01;\n            timer <= 8'd15;\n          end\n          2'b01: begin\n            state <= 2'b10;\n            timer <= 8'd20;\n          end\n          2'b10: begin\n            state <= 2'b00;\n            timer <= 8'd20;\n          end\n          default: begin\n            state <= 2'b00;\n            timer <= 8'd0;\n          end\n        endcase\n      end else begin\n        timer <= timer - 8'd1;\n      end\n    end\n  end\nendmodule",
+      "verified": false,
+      "reason": "ERROR: Found 2 unproven $equiv cells in 'equiv_status -assert'.",
+      "llm_seconds": 15.4
+    },
+    {
+      "attempt": 2,
+      "rtl": "module traffic(clk, rst, light);\n  input clk;\n  input rst;\n  output [1:0] light;\n\n  reg [1:0] state;\n  reg [7:0] timer;\n\n  assign light = state;\n\n  always @(posedge clk) begin\n    if (rst) begin\n      state <= 2'b00;\n      timer <= 8'd19;\n    end else begin\n      if (timer == 8'd0) begin\n        case (state)\n          2'b00: begin\n            state <= 2'b01;\n            timer <= 8'd14;\n          end\n          2'b01: begin\n            state <= 2'b10;\n            timer <= 8'd19;\n          end\n          2'b10: begin\n            state <= 2'b00;\n            timer <= 8'd19;\n          end\n          default: begin\n            state <= 2'b00;\n            timer <= 8'd19;\n          end\n        endcase\n      end else begin\n        timer <= timer - 8'd1;\n      end\n    end\n  end\nendmodule",
+      "verified": false,
+      "reason": "ERROR: Found 4 unproven $equiv cells in 'equiv_status -assert'.",
+      "llm_seconds": 15.0
+    },
+    {
+      "attempt": 3,
+      "rtl": "module traffic(clk, rst, light);\n  input clk;\n  input rst;\n  output [1:0] light;\n\n  reg [1:0] light;\n  reg [7:0] timer;\n\n  localparam RED    = 2'b00;\n  localparam GREEN  = 2'b01;\n  localparam YELLOW = 2'b10;\n\n  always @(posedge clk) begin\n    if (rst) begin\n      light <= RED;\n      timer <= 8'd0;\n    end else begin\n      case (light)\n        RED: begin\n          if (timer == 8'd19) begin\n            light <= GREEN;\n            timer <= 8'd0;\n          end else begin\n            timer <= timer + 8'd1;\n          end\n        end\n\n        GREEN: begin\n          if (timer == 8'd14) begin\n            light <= YELLOW;\n            timer <= 8'd0;\n          end else begin\n            timer <= timer + 8'd1;\n          end\n        end\n\n        YELLOW: begin\n          if (timer == 8'd4) begin\n            light <= RED;\n            timer <= 8'd0;\n          end else begin\n            timer <= timer + 8'd1;\n          end\n        end\n\n        default: begin\n          light <= RED;\n          timer <= 8'd0;\n        end\n      endcase\n    end\n  end\nendmodule",
+      "verified": false,
+      "reason": "ERROR: Found 10 unproven $equiv cells in 'equiv_status -assert'.",
+      "llm_seconds": 16.3
+    }
+  ],
+  "success": false,
+  "final_rtl": "module traffic(clk, rst, light);\n  input clk;\n  input rst;\n  output [1:0] light;\n\n  reg [1:0] light;\n  reg [7:0] timer;\n\n  localparam RED    = 2'b00;\n  localparam GREEN  = 2'b01;\n  localparam YELLOW = 2'b10;\n\n  always @(posedge clk) begin\n    if (rst) begin\n      light <= RED;\n      timer <= 8'd0;\n    end else begin\n      case (light)\n        RED: begin\n          if (timer == 8'd19) begin\n            light <= GREEN;\n            timer <= 8'd0;\n          end else begin\n            timer <= timer + 8'd1;\n          end\n        end\n\n        GREEN: begin\n          if (timer == 8'd14) begin\n            light <= YELLOW;\n            timer <= 8'd0;\n          end else begin\n            timer <= timer + 8'd1;\n          end\n        end\n\n        YELLOW: begin\n          if (timer == 8'd4) begin\n            light <= RED;\n            timer <= 8'd0;\n          end else begin\n            timer <= timer + 8'd1;\n          end\n        end\n\n        default: begin\n          light <= RED;\n          timer <= 8'd0;\n        end\n      endcase\n    end\n  end\nendmodule",
+  "attempts_used": 3
+}

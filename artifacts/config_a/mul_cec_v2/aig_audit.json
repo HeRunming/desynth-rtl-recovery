@@ -1,0 +1,12 @@
+{
+  "seed": 170918,
+  "vectors": 260,
+  "input_symbols_exact": true,
+  "output_symbols_exact": true,
+  "all_zero_outputs": {
+    "lhs": 0,
+    "rhs": 0
+  },
+  "status": "passed",
+  "note": "Simulation audits serialization and reported counterexample; not formal equivalence."
+}

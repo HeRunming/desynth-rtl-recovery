@@ -1,0 +1,62 @@
+{
+  "top": "alu8",
+  "mode": "hybrid",
+  "attempts": [
+    {
+      "attempt": 1,
+      "verified": true,
+      "reason": "功能等价已证明",
+      "rtl": "module alu8(a, b, op, result, zero, carry);\n  input  [7:0] a;\n  input  [7:0] b;\n  input  [2:0] op;\n  output [7:0] result;\n  output zero;\n  output carry;\n\n  reg [7:0] result;\n  reg       carry;\n\n  wire [8:0] add_ext;\n  wire [8:0] sub_ext;\n\n  assign add_ext = {1'b0, a} + {1'b0, b};\n  assign sub_ext = {1'b0, a} - {1'b0, b};\n\n  always @* begin\n    result = 8'b00000000;\n    carry  = 1'b0;\n\n    case (op)\n      3'b000: begin\n        result = add_ext[7:0];\n        carry  = add_ext[8];\n      end\n\n      3'b001: begin\n        result = sub_ext[7:0];\n        carry  = (a < b);\n      end\n\n      3'b010: begin\n        result = a & b;\n        carry  = 1'b0;\n      end\n\n      3'b011: begin\n        result = a | b;\n        carry  = 1'b0;\n      end\n\n      3'b100: begin\n        result = a ^ b;\n        carry  = 1'b0;\n      end\n\n      3'b101: begin\n        result = ~a;\n        carry  = 1'b0;\n      end\n\n      3'b110: begin\n        result = {a[6:0], 1'b0};\n        carry  = 1'b0;\n      end\n\n      3'b111: begin\n        result = {1'b0, a[7:1]};\n        carry  = 1'b0;\n      end\n    endcase\n  end\n\n  assign zero = (result == 8'b00000000);\n\nendmodule",
+      "llm_seconds": 33.8
+    }
+  ],
+  "hal_facts": {
+    "total_gates": 235,
+    "num_flip_flops": 0,
+    "top_ports": {
+      "inputs": [
+        "a(7)",
+        "op(2)",
+        "b(7)",
+        "b(4)",
+        "b(1)",
+        "b(0)",
+        "a(6)",
+        "a(5)",
+        "b(5)",
+        "b(2)",
+        "a(4)",
+        "op(0)",
+        "a(1)",
+        "a(3)",
+        "op(1)",
+        "a(2)",
+        "b(3)",
+        "b(6)",
+        "a(0)"
+      ],
+      "outputs": [
+        "zero",
+        "result(6)",
+        "result(5)",
+        "result(1)",
+        "result(0)",
+        "result(4)",
+        "carry",
+        "result(2)",
+        "result(3)",
+        "result(7)"
+      ]
+    },
+    "gate_type_histogram": {
+      "AND2": 104,
+      "OR2": 91,
+      "INV": 21,
+      "XOR": 19
+    },
+    "register_groups": []
+  },
+  "success": true,
+  "final_rtl": "module alu8(a, b, op, result, zero, carry);\n  input  [7:0] a;\n  input  [7:0] b;\n  input  [2:0] op;\n  output [7:0] result;\n  output zero;\n  output carry;\n\n  reg [7:0] result;\n  reg       carry;\n\n  wire [8:0] add_ext;\n  wire [8:0] sub_ext;\n\n  assign add_ext = {1'b0, a} + {1'b0, b};\n  assign sub_ext = {1'b0, a} - {1'b0, b};\n\n  always @* begin\n    result = 8'b00000000;\n    carry  = 1'b0;\n\n    case (op)\n      3'b000: begin\n        result = add_ext[7:0];\n        carry  = add_ext[8];\n      end\n\n      3'b001: begin\n        result = sub_ext[7:0];\n        carry  = (a < b);\n      end\n\n      3'b010: begin\n        result = a & b;\n        carry  = 1'b0;\n      end\n\n      3'b011: begin\n        result = a | b;\n        carry  = 1'b0;\n      end\n\n      3'b100: begin\n        result = a ^ b;\n        carry  = 1'b0;\n      end\n\n      3'b101: begin\n        result = ~a;\n        carry  = 1'b0;\n      end\n\n      3'b110: begin\n        result = {a[6:0], 1'b0};\n        carry  = 1'b0;\n      end\n\n      3'b111: begin\n        result = {1'b0, a[7:1]};\n        carry  = 1'b0;\n      end\n    endcase\n  end\n\n  assign zero = (result == 8'b00000000);\n\nendmodule",
+  "attempts_used": 1
+}

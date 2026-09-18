@@ -1,0 +1,266 @@
+{
+  "top": "fifo",
+  "mode": "hybrid",
+  "attempts": [
+    {
+      "attempt": 1,
+      "verified": false,
+      "reason": "ERROR: Found 128 unproven $equiv cells in 'equiv_status -assert'.",
+      "rtl": "module fifo(clk, rst, wr_en, rd_en, din, dout, full, empty);\n  input        clk;\n  input        rst;\n  input        wr_en;\n  input        rd_en;\n  input  [7:0] din;\n  output [7:0] dout;\n  output       full;\n  output       empty;\n\n  reg [7:0] dout;\n\n  reg [7:0] mem [0:15];\n  reg [4:0] wr_ptr;\n  reg [4:0] rd_ptr;\n\n  wire ptr_addr_equal;\n  wire wr_fire;\n  wire rd_fire;\n\n  assign ptr_addr_equal = (wr_ptr[3:0] == rd_ptr[3:0]);\n\n  assign empty = ptr_addr_equal && (wr_ptr[4] == rd_ptr[4]);\n  assign full  = ptr_addr_equal && (wr_ptr[4] != rd_ptr[4]);\n\n  assign wr_fire = wr_en && !full;\n  assign rd_fire = rd_en && !empty;\n\n  always @(posedge clk) begin\n    if (wr_fire)\n      mem[wr_ptr[3:0]] <= din;\n  end\n\n  always @(posedge clk) begin\n    if (rst) begin\n      wr_ptr <= 5'b00000;\n      rd_ptr <= 5'b00000;\n      dout   <= 8'b00000000;\n    end else begin\n      if (wr_fire)\n        wr_ptr <= wr_ptr + 5'b00001;\n\n      if (rd_fire) begin\n        dout   <= mem[rd_ptr[3:0]];\n        rd_ptr <= rd_ptr + 5'b00001;\n      end\n    end\n  end\nendmodule",
+      "llm_seconds": 18.6
+    },
+    {
+      "attempt": 2,
+      "verified": false,
+      "reason": "ERROR: Found 128 unproven $equiv cells in 'equiv_status -assert'.",
+      "rtl": "module fifo(clk, rst, wr_en, rd_en, din, dout, full, empty);\n  input        clk;\n  input        rst;\n  input        wr_en;\n  input        rd_en;\n  input  [7:0] din;\n  output [7:0] dout;\n  output       full;\n  output       empty;\n\n  reg [7:0] dout;\n\n  reg [7:0] mem [0:15];\n  reg [4:0] wr_ptr;\n  reg [4:0] rd_ptr;\n\n  wire same_addr;\n  wire do_write;\n  wire do_read;\n\n  integer i;\n\n  assign same_addr = (wr_ptr[3:0] == rd_ptr[3:0]);\n\n  assign empty = same_addr && (wr_ptr[4] == rd_ptr[4]);\n  assign full  = same_addr && (wr_ptr[4] != rd_ptr[4]);\n\n  assign do_write = wr_en && !full;\n  assign do_read  = rd_en && !empty;\n\n  always @(posedge clk) begin\n    if (rst) begin\n      wr_ptr <= 5'b00000;\n      rd_ptr <= 5'b00000;\n      dout   <= 8'b00000000;\n      for (i = 0; i < 16; i = i + 1)\n        mem[i] <= 8'b00000000;\n    end else begin\n      if (do_write) begin\n        mem[wr_ptr[3:0]] <= din;\n        wr_ptr <= wr_ptr + 5'b00001;\n      end\n\n      if (do_read) begin\n        dout   <= mem[rd_ptr[3:0]];\n        rd_ptr <= rd_ptr + 5'b00001;\n      end\n    end\n  end\nendmodule",
+      "llm_seconds": 19.7
+    },
+    {
+      "attempt": 3,
+      "verified": true,
+      "reason": "功能等价已证明",
+      "rtl": "module fifo(clk, rst, wr_en, rd_en, din, dout, full, empty);\n  input        clk;\n  input        rst;\n  input        wr_en;\n  input        rd_en;\n  input  [7:0] din;\n  output [7:0] dout;\n  output       full;\n  output       empty;\n\n  reg [7:0] dout;\n\n  reg [7:0] mem [0:15];\n  reg [4:0] wr_ptr;\n  reg [4:0] rd_ptr;\n\n  wire ptr_addr_equal;\n  wire fifo_empty;\n  wire fifo_full;\n  wire write_fire;\n  wire read_fire;\n\n  assign ptr_addr_equal = (wr_ptr[3:0] == rd_ptr[3:0]);\n\n  assign fifo_empty = ptr_addr_equal && (wr_ptr[4] == rd_ptr[4]);\n  assign fifo_full  = ptr_addr_equal && (wr_ptr[4] != rd_ptr[4]);\n\n  assign empty = fifo_empty;\n  assign full  = fifo_full;\n\n  assign write_fire = wr_en && !fifo_full;\n  assign read_fire  = rd_en && !fifo_empty;\n\n  always @(posedge clk) begin\n    if (rst) begin\n      wr_ptr <= 5'b00000;\n      rd_ptr <= 5'b00000;\n      dout   <= 8'b00000000;\n    end else begin\n      if (write_fire) begin\n        mem[wr_ptr[3:0]] <= din;\n        wr_ptr <= wr_ptr + 5'b00001;\n      end\n\n      if (read_fire) begin\n        dout   <= mem[rd_ptr[3:0]];\n        rd_ptr <= rd_ptr + 5'b00001;\n      end\n    end\n  end\nendmodule",
+      "llm_seconds": 15.3
+    }
+  ],
+  "hal_facts": {
+    "total_gates": 649,
+    "num_flip_flops": 146,
+    "top_ports": {
+      "inputs": [
+        "din(7)",
+        "rd_en",
+        "din(6)",
+        "din(2)",
+        "din(4)",
+        "din(3)",
+        "clk",
+        "rst",
+        "din(0)",
+        "din(5)",
+        "wr_en",
+        "din(1)"
+      ],
+      "outputs": [
+        "empty",
+        "dout(6)",
+        "dout(4)",
+        "dout(2)",
+        "dout(7)",
+        "dout(0)",
+        "full",
+        "dout(3)",
+        "dout(5)",
+        "dout(1)"
+      ]
+    },
+    "gate_type_histogram": {
+      "INV": 28,
+      "XOR": 7,
+      "OR2": 125,
+      "AND2": 164,
+      "MUX": 179,
+      "FF": 146
+    },
+    "register_groups": [
+      {
+        "group_id": 0,
+        "width": 128,
+        "flip_flops": [
+          "_1004_",
+          "_1005_",
+          "_1006_",
+          "_1007_",
+          "_1008_",
+          "_1009_",
+          "_1010_",
+          "_1011_",
+          "_1012_",
+          "_1013_",
+          "_1014_",
+          "_1015_",
+          "_1016_",
+          "_1017_",
+          "_1018_",
+          "_1019_",
+          "_1020_",
+          "_1021_",
+          "_1022_",
+          "_1023_",
+          "_1024_",
+          "_1025_",
+          "_1026_",
+          "_1027_",
+          "_1028_",
+          "_1029_",
+          "_1030_",
+          "_1031_",
+          "_1032_",
+          "_1033_",
+          "_1034_",
+          "_1035_",
+          "_1036_",
+          "_1037_",
+          "_1038_",
+          "_1039_",
+          "_1040_",
+          "_1041_",
+          "_1042_",
+          "_1043_",
+          "_1044_",
+          "_1045_",
+          "_1046_",
+          "_1047_",
+          "_1048_",
+          "_1049_",
+          "_1050_",
+          "_1051_",
+          "_1052_",
+          "_1053_",
+          "_1054_",
+          "_1055_",
+          "_1056_",
+          "_1057_",
+          "_1058_",
+          "_1059_",
+          "_1060_",
+          "_1061_",
+          "_1062_",
+          "_1063_",
+          "_1064_",
+          "_1065_",
+          "_1066_",
+          "_1067_",
+          "_1068_",
+          "_1069_",
+          "_1070_",
+          "_1071_",
+          "_1072_",
+          "_1073_",
+          "_1074_",
+          "_1075_",
+          "_1076_",
+          "_1077_",
+          "_1078_",
+          "_1079_",
+          "_1080_",
+          "_1081_",
+          "_1082_",
+          "_1083_",
+          "_1084_",
+          "_1085_",
+          "_1086_",
+          "_1087_",
+          "_1088_",
+          "_1089_",
+          "_1090_",
+          "_1091_",
+          "_1092_",
+          "_1093_",
+          "_1094_",
+          "_1095_",
+          "_1096_",
+          "_1097_",
+          "_1098_",
+          "_1099_",
+          "_1100_",
+          "_1101_",
+          "_1102_",
+          "_1103_",
+          "_1104_",
+          "_1105_",
+          "_1106_",
+          "_1107_",
+          "_1108_",
+          "_1109_",
+          "_1110_",
+          "_1111_",
+          "_1112_",
+          "_1113_",
+          "_1114_",
+          "_1115_",
+          "_1116_",
+          "_1117_",
+          "_1118_",
+          "_1119_",
+          "_1120_",
+          "_1121_",
+          "_1122_",
+          "_1123_",
+          "_1124_",
+          "_1125_",
+          "_1126_",
+          "_1127_",
+          "_1128_",
+          "_1129_",
+          "_1130_",
+          "_1131_"
+        ]
+      },
+      {
+        "group_id": 1,
+        "width": 8,
+        "flip_flops": [
+          "_1142_",
+          "_1143_",
+          "_1144_",
+          "_1145_",
+          "_1146_",
+          "_1147_",
+          "_1148_",
+          "_1149_"
+        ]
+      },
+      {
+        "group_id": 2,
+        "width": 5,
+        "flip_flops": [
+          "_1137_",
+          "_1138_",
+          "_1139_",
+          "_1140_",
+          "_1141_"
+        ]
+      },
+      {
+        "group_id": 3,
+        "width": 1,
+        "flip_flops": [
+          "_1132_"
+        ]
+      },
+      {
+        "group_id": 4,
+        "width": 1,
+        "flip_flops": [
+          "_1133_"
+        ]
+      },
+      {
+        "group_id": 5,
+        "width": 1,
+        "flip_flops": [
+          "_1134_"
+        ]
+      },
+      {
+        "group_id": 6,
+        "width": 1,
+        "flip_flops": [
+          "_1135_"
+        ]
+      },
+      {
+        "group_id": 7,
+        "width": 1,
+        "flip_flops": [
+          "_1136_"
+        ]
+      }
+    ]
+  },
+  "success": true,
+  "final_rtl": "module fifo(clk, rst, wr_en, rd_en, din, dout, full, empty);\n  input        clk;\n  input        rst;\n  input        wr_en;\n  input        rd_en;\n  input  [7:0] din;\n  output [7:0] dout;\n  output       full;\n  output       empty;\n\n  reg [7:0] dout;\n\n  reg [7:0] mem [0:15];\n  reg [4:0] wr_ptr;\n  reg [4:0] rd_ptr;\n\n  wire ptr_addr_equal;\n  wire fifo_empty;\n  wire fifo_full;\n  wire write_fire;\n  wire read_fire;\n\n  assign ptr_addr_equal = (wr_ptr[3:0] == rd_ptr[3:0]);\n\n  assign fifo_empty = ptr_addr_equal && (wr_ptr[4] == rd_ptr[4]);\n  assign fifo_full  = ptr_addr_equal && (wr_ptr[4] != rd_ptr[4]);\n\n  assign empty = fifo_empty;\n  assign full  = fifo_full;\n\n  assign write_fire = wr_en && !fifo_full;\n  assign read_fire  = rd_en && !fifo_empty;\n\n  always @(posedge clk) begin\n    if (rst) begin\n      wr_ptr <= 5'b00000;\n      rd_ptr <= 5'b00000;\n      dout   <= 8'b00000000;\n    end else begin\n      if (write_fire) begin\n        mem[wr_ptr[3:0]] <= din;\n        wr_ptr <= wr_ptr + 5'b00001;\n      end\n\n      if (read_fire) begin\n        dout   <= mem[rd_ptr[3:0]];\n        rd_ptr <= rd_ptr + 5'b00001;\n      end\n    end\n  end\nendmodule",
+  "attempts_used": 3
+}

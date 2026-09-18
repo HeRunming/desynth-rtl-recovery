@@ -1,0 +1,45 @@
+======== ABC command line "&cec -T 300 -v lhs.aig rhs.aig"
+Simulating 15 words for 15 rounds. SAT solving with 1000 conflicts.
+cst =   19779  cls =      0  lit =   19779  unused =      66  proof =     0
+cst =      74  cls =   6866  lit =    7161  unused =    5818  proof =     0
+cst =      23  cls =   6940  lit =    7013  unused =    5892  proof =     0
+cst =      10  cls =   6949  lit =    6993  unused =    5903  proof =     0
+cst =       6  cls =   6949  lit =    6984  unused =    5912  proof =     0
+cst =       5  cls =   6949  lit =    6982  unused =    5914  proof =     0
+cst =       5  cls =   6951  lit =    6980  unused =    5914  proof =     0
+cst =       4  cls =   6951  lit =    6979  unused =    5915  proof =     0
+cst =       4  cls =   6951  lit =    6979  unused =    5915  proof =     0
+cst =       3  cls =   6951  lit =    6978  unused =    5916  proof =     0
+  1 : P =    130. D =      0. F =     0. M =    7239. And =   15837. Time =     0.01 sec
+Switching into reduced mode.
+  2 : P =     35. D =      0. F =     0. M =    3263. And =   14453. Time =     0.01 sec
+Switching into normal mode.
+  3 : P =     46. D =      0. F =     0. M =       0. And =   14329. Time =     0.01 sec
+  4 : P =     10. D =      1. F =     0. M =       0. And =   13959. Time =     0.02 sec
+  5 : P =      7. D =      1. F =     0. M =       0. And =   13098. Time =     0.01 sec
+  6 : P =      5. D =      0. F =     1. M =       0. And =   12953. Time =     0.07 sec
+  7 : P =     10. D =      0. F =     1. M =       0. And =   12726. Time =     0.06 sec
+  8 : P =      7. D =      0. F =     2. M =       0. And =   12628. Time =     0.10 sec
+  9 : P =      5. D =      0. F =     2. M =       0. And =   12540. Time =     0.12 sec
+ 10 : P =      4. D =      0. F =     2. M =       0. And =   12511. Time =     0.10 sec
+ 11 : P =      1. D =      0. F =     2. M =       0. And =   12508. Time =     0.10 sec
+Increasing conflict limit to 10000.
+ 12 : P =      1. D =      0. F =     2. M =       0. And =   12501. Time =     1.16 sec
+Increasing conflict limit to 100000.
+ 13 : P =      0. D =      1. F =     1. M =       0. And =   12501. Time =    14.10 sec
+ 14 : P =      1. D =      0. F =     0. M =       0. And =   12439. Time =     0.01 sec
+ 15 : P =      3. D =      0. F =     0. M =       0. And =   12378. Time =     0.01 sec
+ 16 : P =      3. D =      0. F =     0. M =       0. And =   12322. Time =     0.01 sec
+ 17 : P =      1. D =      0. F =     0. M =       0. And =       0. Time =     0.01 sec
+Network after reduction is empty.
+Performed 285 SAT calls: P = 269  D = 3  F = 13
+NBeg = 19779. NEnd = 0. (Gain = 100.00 %).  RBeg = 0. REnd = 0. (Gain =   0.00 %).
+Sim  =     0.04 sec (  0.00 %)
+Sat  =    15.83 sec (  0.00 %)
+Pat  =     0.00 sec (  0.00 %)
+Time =    15.92 sec
+Networks are UNDECIDED after the new CEC engine.  Time =    15.92 sec
+Calling the old CEC engine.
+Original miter:   Nodes =      0.
+Initial SAT:      Nodes =      0.  Time =     0.01 sec
+Networks are equivalent.  Time =    15.95 sec

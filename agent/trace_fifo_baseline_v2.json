@@ -1,0 +1,16 @@
+{
+  "top": "fifo",
+  "mode": "baseline",
+  "attempts": [
+    {
+      "attempt": 1,
+      "verified": true,
+      "reason": "功能等价已证明",
+      "rtl": "module fifo(clk, rst, wr_en, rd_en, din, dout, full, empty);\n  input        clk;\n  input        rst;\n  input        wr_en;\n  input        rd_en;\n  input  [7:0] din;\n  output reg [7:0] dout;\n  output       full;\n  output       empty;\n\n  reg [7:0] mem [0:15];\n  reg [4:0] wr_ptr;\n  reg [4:0] rd_ptr;\n\n  wire ptr_low_equal;\n  wire write_fire;\n  wire read_fire;\n\n  assign ptr_low_equal = (wr_ptr[3:0] == rd_ptr[3:0]);\n\n  assign empty = ptr_low_equal && (wr_ptr[4] == rd_ptr[4]);\n  assign full  = ptr_low_equal && (wr_ptr[4] != rd_ptr[4]);\n\n  assign write_fire = wr_en && !full;\n  assign read_fire  = rd_en && !empty;\n\n  always @(posedge clk) begin\n    if (rst) begin\n      wr_ptr <= 5'd0;\n      rd_ptr <= 5'd0;\n      dout   <= 8'd0;\n    end else begin\n      if (write_fire) begin\n        mem[wr_ptr[3:0]] <= din;\n        wr_ptr <= wr_ptr + 5'd1;\n      end\n\n      if (read_fire) begin\n        dout <= mem[rd_ptr[3:0]];\n        rd_ptr <= rd_ptr + 5'd1;\n      end\n    end\n  end\nendmodule",
+      "llm_seconds": 31.2
+    }
+  ],
+  "success": true,
+  "final_rtl": "module fifo(clk, rst, wr_en, rd_en, din, dout, full, empty);\n  input        clk;\n  input        rst;\n  input        wr_en;\n  input        rd_en;\n  input  [7:0] din;\n  output reg [7:0] dout;\n  output       full;\n  output       empty;\n\n  reg [7:0] mem [0:15];\n  reg [4:0] wr_ptr;\n  reg [4:0] rd_ptr;\n\n  wire ptr_low_equal;\n  wire write_fire;\n  wire read_fire;\n\n  assign ptr_low_equal = (wr_ptr[3:0] == rd_ptr[3:0]);\n\n  assign empty = ptr_low_equal && (wr_ptr[4] == rd_ptr[4]);\n  assign full  = ptr_low_equal && (wr_ptr[4] != rd_ptr[4]);\n\n  assign write_fire = wr_en && !full;\n  assign read_fire  = rd_en && !empty;\n\n  always @(posedge clk) begin\n    if (rst) begin\n      wr_ptr <= 5'd0;\n      rd_ptr <= 5'd0;\n      dout   <= 8'd0;\n    end else begin\n      if (write_fire) begin\n        mem[wr_ptr[3:0]] <= din;\n        wr_ptr <= wr_ptr + 5'd1;\n      end\n\n      if (read_fire) begin\n        dout <= mem[rd_ptr[3:0]];\n        rd_ptr <= rd_ptr + 5'd1;\n      end\n    end\n  end\nendmodule",
+  "attempts_used": 1
+}

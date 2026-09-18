@@ -1,0 +1,99 @@
+{
+  "top": "uart_tx",
+  "mode": "hybrid",
+  "attempts": [
+    {
+      "attempt": 1,
+      "verified": true,
+      "reason": "功能等价已证明",
+      "rtl": "module uart_tx(clk, rst, tx_start, tx_data, tx_serial, tx_busy, tx_done);\n  input        clk;\n  input        rst;\n  input        tx_start;\n  input  [7:0] tx_data;\n  output reg   tx_serial;\n  output reg   tx_busy;\n  output reg   tx_done;\n\n  reg [7:0] clk_count;\n  reg [2:0] state;\n  reg [7:0] tx_shift;\n  reg [2:0] bit_index;\n\n  localparam [2:0] ST_IDLE    = 3'b000;\n  localparam [2:0] ST_START   = 3'b001;\n  localparam [2:0] ST_DATA    = 3'b010;\n  localparam [2:0] ST_STOP    = 3'b011;\n  localparam [2:0] ST_CLEANUP = 3'b100;\n\n  localparam [7:0] BAUD_MAX = 8'd86;\n\n  wire baud_tick = (clk_count >= BAUD_MAX);\n\n  always @(posedge clk) begin\n    if (rst) begin\n      state     <= ST_IDLE;\n      clk_count <= 8'd0;\n      bit_index <= 3'd0;\n      tx_busy   <= 1'b0;\n      tx_done   <= 1'b0;\n      tx_serial <= 1'b1;\n    end else begin\n      tx_done <= 1'b0;\n\n      if (state[2]) begin\n        clk_count <= clk_count;\n      end else begin\n        case (state)\n          ST_START, ST_DATA, ST_STOP: begin\n            if (baud_tick)\n              clk_count <= 8'd0;\n            else\n              clk_count <= clk_count + 8'd1;\n          end\n          default: begin\n            clk_count <= 8'd0;\n          end\n        endcase\n      end\n\n      case (state)\n        ST_IDLE: begin\n          bit_index <= 3'd0;\n          tx_serial <= 1'b1;\n          tx_busy <= 1'b0;\n\n          if (tx_start) begin\n            state <= ST_START;\n            tx_shift <= tx_data;\n            tx_busy <= 1'b1;\n          end else begin\n            state <= ST_IDLE;\n          end\n        end\n\n        ST_START: begin\n          tx_serial <= 1'b0;\n          tx_busy <= tx_busy;\n          bit_index <= bit_index;\n\n          if (baud_tick)\n            state <= ST_DATA;\n          else\n            state <= ST_START;\n        end\n\n        ST_DATA: begin\n          tx_serial <= tx_shift[bit_index];\n          tx_busy <= tx_busy;\n\n          if (baud_tick) begin\n            bit_index <= bit_index + 3'd1;\n\n            if (bit_index == 3'd7)\n              state <= ST_STOP;\n            else\n              state <= ST_DATA;\n          end else begin\n            bit_index <= bit_index;\n            state <= ST_DATA;\n          end\n        end\n\n        ST_STOP: begin\n          tx_serial <= 1'b1;\n          bit_index <= bit_index;\n\n          if (baud_tick) begin\n            state <= ST_CLEANUP;\n            tx_busy <= 1'b0;\n            tx_done <= 1'b1;\n          end else begin\n            state <= ST_STOP;\n            tx_busy <= tx_busy;\n          end\n        end\n\n        ST_CLEANUP: begin\n          state <= ST_IDLE;\n          tx_serial <= tx_serial;\n          tx_busy <= tx_busy;\n          bit_index <= bit_index;\n        end\n\n        default: begin\n          state <= ST_IDLE;\n          tx_serial <= 1'b1;\n          tx_busy <= 1'b0;\n          bit_index <= 3'd0;\n        end\n      endcase\n    end\n  end\n\nendmodule",
+      "llm_seconds": 74.6
+    }
+  ],
+  "hal_facts": {
+    "total_gates": 172,
+    "num_flip_flops": 25,
+    "top_ports": {
+      "inputs": [
+        "tx_data(6)",
+        "tx_data(5)",
+        "tx_data(4)",
+        "tx_data(0)",
+        "tx_data(3)",
+        "tx_start",
+        "clk",
+        "rst",
+        "tx_data(7)",
+        "tx_data(2)",
+        "tx_data(1)"
+      ],
+      "outputs": [
+        "tx_done",
+        "tx_busy",
+        "tx_serial"
+      ]
+    },
+    "gate_type_histogram": {
+      "INV": 17,
+      "AND2": 71,
+      "OR2": 44,
+      "MUX": 11,
+      "XOR": 4,
+      "FF": 25
+    },
+    "register_groups": [
+      {
+        "group_id": 1,
+        "width": 15,
+        "flip_flops": [
+          "_294_",
+          "_295_",
+          "_296_",
+          "_297_",
+          "_298_",
+          "_299_",
+          "_300_",
+          "_301_",
+          "_302_",
+          "_303_",
+          "_304_",
+          "_305_",
+          "_316_",
+          "_317_",
+          "_318_"
+        ]
+      },
+      {
+        "group_id": 0,
+        "width": 8,
+        "flip_flops": [
+          "_308_",
+          "_309_",
+          "_310_",
+          "_311_",
+          "_312_",
+          "_313_",
+          "_314_",
+          "_315_"
+        ]
+      },
+      {
+        "group_id": 2,
+        "width": 1,
+        "flip_flops": [
+          "_306_"
+        ]
+      },
+      {
+        "group_id": 3,
+        "width": 1,
+        "flip_flops": [
+          "_307_"
+        ]
+      }
+    ]
+  },
+  "success": true,
+  "final_rtl": "module uart_tx(clk, rst, tx_start, tx_data, tx_serial, tx_busy, tx_done);\n  input        clk;\n  input        rst;\n  input        tx_start;\n  input  [7:0] tx_data;\n  output reg   tx_serial;\n  output reg   tx_busy;\n  output reg   tx_done;\n\n  reg [7:0] clk_count;\n  reg [2:0] state;\n  reg [7:0] tx_shift;\n  reg [2:0] bit_index;\n\n  localparam [2:0] ST_IDLE    = 3'b000;\n  localparam [2:0] ST_START   = 3'b001;\n  localparam [2:0] ST_DATA    = 3'b010;\n  localparam [2:0] ST_STOP    = 3'b011;\n  localparam [2:0] ST_CLEANUP = 3'b100;\n\n  localparam [7:0] BAUD_MAX = 8'd86;\n\n  wire baud_tick = (clk_count >= BAUD_MAX);\n\n  always @(posedge clk) begin\n    if (rst) begin\n      state     <= ST_IDLE;\n      clk_count <= 8'd0;\n      bit_index <= 3'd0;\n      tx_busy   <= 1'b0;\n      tx_done   <= 1'b0;\n      tx_serial <= 1'b1;\n    end else begin\n      tx_done <= 1'b0;\n\n      if (state[2]) begin\n        clk_count <= clk_count;\n      end else begin\n        case (state)\n          ST_START, ST_DATA, ST_STOP: begin\n            if (baud_tick)\n              clk_count <= 8'd0;\n            else\n              clk_count <= clk_count + 8'd1;\n          end\n          default: begin\n            clk_count <= 8'd0;\n          end\n        endcase\n      end\n\n      case (state)\n        ST_IDLE: begin\n          bit_index <= 3'd0;\n          tx_serial <= 1'b1;\n          tx_busy <= 1'b0;\n\n          if (tx_start) begin\n            state <= ST_START;\n            tx_shift <= tx_data;\n            tx_busy <= 1'b1;\n          end else begin\n            state <= ST_IDLE;\n          end\n        end\n\n        ST_START: begin\n          tx_serial <= 1'b0;\n          tx_busy <= tx_busy;\n          bit_index <= bit_index;\n\n          if (baud_tick)\n            state <= ST_DATA;\n          else\n            state <= ST_START;\n        end\n\n        ST_DATA: begin\n          tx_serial <= tx_shift[bit_index];\n          tx_busy <= tx_busy;\n\n          if (baud_tick) begin\n            bit_index <= bit_index + 3'd1;\n\n            if (bit_index == 3'd7)\n              state <= ST_STOP;\n            else\n              state <= ST_DATA;\n          end else begin\n            bit_index <= bit_index;\n            state <= ST_DATA;\n          end\n        end\n\n        ST_STOP: begin\n          tx_serial <= 1'b1;\n          bit_index <= bit_index;\n\n          if (baud_tick) begin\n            state <= ST_CLEANUP;\n            tx_busy <= 1'b0;\n            tx_done <= 1'b1;\n          end else begin\n            state <= ST_STOP;\n            tx_busy <= tx_busy;\n          end\n        end\n\n        ST_CLEANUP: begin\n          state <= ST_IDLE;\n          tx_serial <= tx_serial;\n          tx_busy <= tx_busy;\n          bit_index <= bit_index;\n        end\n\n        default: begin\n          state <= ST_IDLE;\n          tx_serial <= 1'b1;\n          tx_busy <= 1'b0;\n          bit_index <= 3'd0;\n        end\n      endcase\n    end\n  end\n\nendmodule",
+  "attempts_used": 1
+}

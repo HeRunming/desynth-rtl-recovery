@@ -1,0 +1,17 @@
+# Config A: ENABLE_FAST_MUL=1 (并行乘法器 → 表示爆炸的来源)
+# 与 Config B (synth_mid.ys) 唯一区别就是这个参数。
+read_verilog /home/hrm/desynth/examples/complex/picorv32.v
+chparam -set ENABLE_MUL 1 -set ENABLE_FAST_MUL 1 -set ENABLE_DIV 1 -set BARREL_SHIFTER 1 -set ENABLE_IRQ 1 -set COMPRESSED_ISA 1 -set ENABLE_TRACE 1 picorv32
+hierarchy -top picorv32
+proc
+flatten
+opt
+memory
+opt
+techmap
+opt
+dfflibmap -liberty /home/hrm/desynth/pipeline/hal_cells.lib
+abc -liberty /home/hrm/desynth/pipeline/hal_cells.lib
+opt_clean
+write_verilog -noattr /home/hrm/desynth/work/big/pico_big_netlist.v
+stat

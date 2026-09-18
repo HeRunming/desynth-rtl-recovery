@@ -1,0 +1,13 @@
+# synth.ys —— Yosys 综合脚本：RTL -> 门级网表
+read_verilog counter.v      # 读入人类写的 RTL
+hierarchy -top counter      # 指定顶层模块
+proc                        # 把 always 块转成内部逻辑
+opt                         # 优化
+techmap                     # 映射到通用门
+opt
+# 映射到一个简单的标准单元库（CMOS gates），逼近真实 ASIC 网表
+abc -g AND,OR,XOR,MUX
+opt_clean
+# 写出门级网表
+write_verilog -noattr counter_netlist.v
+stat                        # 打印统计：用了多少个门

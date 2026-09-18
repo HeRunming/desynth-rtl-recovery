@@ -1,0 +1,13 @@
+{
+  "argv": [
+    "/data/hrm/desynth/tools/oss-cad-suite/bin/yosys-abc",
+    "-c",
+    "&acec -T 1800 -v lhs.aig rhs.aig"
+  ],
+  "limit_s": 1800,
+  "started": 1789628337.2253106,
+  "status": "finished",
+  "pid": 2091060,
+  "rc": 0,
+  "elapsed_s": 0.8158261775970459
+}

@@ -1,0 +1,452 @@
+[
+  {
+    "id": 33,
+    "width": 96,
+    "ok": true,
+    "unit": "寄存器堆",
+    "confidence": "高",
+    "reason": "大量 cpuregs[0..31] 位按 5 位地址译码选择写入写回数据、否则保持旧值，符合 RISC-V 通用寄存器堆逻辑。",
+    "seconds": 12.1
+  },
+  {
+    "id": 12,
+    "width": 49,
+    "ok": true,
+    "unit": "指令译码寄存器",
+    "confidence": "高",
+    "reason": "下一状态包含 decoded_rd/decoded_rs1/decoded_rs2/decoded_imm_j 等指令字段锁存逻辑，典型为取指后保存译码结果的寄",
+    "seconds": 10.0
+  },
+  {
+    "id": 26,
+    "width": 36,
+    "ok": true,
+    "unit": "程序计数器PC",
+    "confidence": "高",
+    "reason": "绝大多数位为 reg_pc(1..31)，下一状态是在取指/跳转控制条件下选择不同PC候选值或保持。",
+    "seconds": 5.8
+  },
+  {
+    "id": 46,
+    "width": 36,
+    "ok": true,
+    "unit": "寄存器堆",
+    "confidence": "高",
+    "reason": "大量 cpuregs[1..31](12) 由同一写使能和5位寄存器地址译码选择写入新数据或保持旧值，典型为寄存器堆位切片逻辑。",
+    "seconds": 11.2
+  },
+  {
+    "id": 47,
+    "width": 36,
+    "ok": true,
+    "unit": "寄存器堆",
+    "confidence": "高",
+    "reason": "cpuregs[31:1](11) 由同一写使能和5位地址译码选择更新、否则保持旧值，符合RISC-V通用寄存器堆单个位切片逻辑。",
+    "seconds": 11.9
+  },
+  {
+    "id": 4,
+    "width": 36,
+    "ok": true,
+    "unit": "寄存器堆",
+    "confidence": "高",
+    "reason": "大量 cpuregs[1..31](6) 由同一写使能和5位目的寄存器译码选择写入/保持，典型整数寄存器堆单比特切片逻辑。",
+    "seconds": 12.3
+  },
+  {
+    "id": 17,
+    "width": 35,
+    "ok": true,
+    "unit": "寄存器堆",
+    "confidence": "高",
+    "reason": "大量 cpuregs[1..31](30) 共享5位写地址译码和写使能/保持逻辑，符合 RISC-V 通用寄存器堆单比特切片特征。",
+    "seconds": 10.0
+  },
+  {
+    "id": 27,
+    "width": 35,
+    "ok": true,
+    "unit": "内存地址寄存器",
+    "confidence": "中",
+    "reason": "绝大多数位为 dbg_mem_addr[2:31] 且具有统一写使能/保持逻辑，指向调试内存地址寄存器，但混有少量计数与指令译码标志位。",
+    "seconds": 10.0
+  },
+  {
+    "id": 15,
+    "width": 35,
+    "ok": true,
+    "unit": "寄存器堆",
+    "confidence": "高",
+    "reason": "大量 cpuregs[1..31](28) 由 5位地址译码和写使能选择写入数据或保持原值，符合 RISC-V 通用寄存器堆的位切片更新逻辑。",
+    "seconds": 10.0
+  },
+  {
+    "id": 6,
+    "width": 35,
+    "ok": true,
+    "unit": "寄存器堆",
+    "confidence": "高",
+    "reason": "绝大多数状态位为 cpuregs[1..31](19)，且逻辑呈现由5位寄存器地址译码选择写入/保持的寄存器堆写端口特征。",
+    "seconds": 13.0
+  },
+  {
+    "id": 42,
+    "width": 35,
+    "ok": true,
+    "unit": "寄存器堆",
+    "confidence": "高",
+    "reason": "大量 cpuregs[1..31](24) 共享5位写地址译码和写使能/保持逻辑，典型为RISC-V通用寄存器堆的单比特切片。",
+    "seconds": 16.0
+  },
+  {
+    "id": 13,
+    "width": 35,
+    "ok": true,
+    "unit": "寄存器堆",
+    "confidence": "高",
+    "reason": "大量 cpuregs[1..31](26) 以5位地址译码选择写入或保持旧值，典型为RISC-V通用寄存器堆单个位切片逻辑。",
+    "seconds": 16.4
+  },
+  {
+    "id": 31,
+    "width": 34,
+    "ok": true,
+    "unit": "寄存器堆",
+    "confidence": "高",
+    "reason": "大量 cpuregs[1..31](15) 共享写使能/写数据并按寄存器编号译码更新，否则保持原值，典型通用寄存器堆位切片逻辑。",
+    "seconds": 8.0
+  },
+  {
+    "id": 2,
+    "width": 34,
+    "ok": true,
+    "unit": "寄存器堆",
+    "confidence": "高",
+    "reason": "绝大多数触发器为 cpuregs[1..31](4)，其下一状态由写使能、5位写地址译码和写回数据选择控制，典型为通用寄存器堆位切片逻辑。",
+    "seconds": 8.9
+  },
+  {
+    "id": 45,
+    "width": 34,
+    "ok": true,
+    "unit": "寄存器堆",
+    "confidence": "高",
+    "reason": "大量 cpuregs[1..31](7) 由相同写使能和 net_12300..12304 五位地址译码选择写入/保持，符合寄存器堆单比特切片逻辑。",
+    "seconds": 9.1
+  },
+  {
+    "id": 41,
+    "width": 34,
+    "ok": true,
+    "unit": "寄存器堆",
+    "confidence": "高",
+    "reason": "大量 cpuregs[1..31](21) 共享写使能/写地址译码并在未选中时保持原值，符合寄存器堆单比特切片逻辑。",
+    "seconds": 9.2
+  },
+  {
+    "id": 43,
+    "width": 34,
+    "ok": true,
+    "unit": "寄存器堆",
+    "confidence": "高",
+    "reason": "下一状态主要为 cpuregs[1..31](20) 的按写地址译码选择写入/保持逻辑，典型是通用寄存器堆的位切片实现。",
+    "seconds": 9.2
+  },
+  {
+    "id": 9,
+    "width": 34,
+    "ok": true,
+    "unit": "寄存器堆",
+    "confidence": "高",
+    "reason": "大量信号为 cpuregs[1..31](22)，下一状态由5位地址译码和写使能选择写入数据或保持旧值，典型寄存器堆单比特切片逻辑。",
+    "seconds": 10.0
+  },
+  {
+    "id": 32,
+    "width": 34,
+    "ok": true,
+    "unit": "寄存器堆",
+    "confidence": "高",
+    "reason": "主要信号为 cpuregs[1..31](31)，由 5 位地址译码 net_12300..12304 和写使能控制在写回数据与保持旧值间选择，符合 RISC-",
+    "seconds": 10.7
+  },
+  {
+    "id": 20,
+    "width": 34,
+    "ok": true,
+    "unit": "寄存器堆",
+    "confidence": "高",
+    "reason": "大量 cpuregs[x](27) 以5位地址译码选择写入、否则保持原值，典型为RISC-V整数寄存器堆的单比特切片逻辑。",
+    "seconds": 12.8
+  },
+  {
+    "id": 14,
+    "width": 34,
+    "ok": true,
+    "unit": "寄存器堆",
+    "confidence": "高",
+    "reason": "大部分触发器为 cpuregs[31:1](10)，由5位寄存器地址译码和写使能选择写入/保持，符合RISC-V通用寄存器堆的位切片逻辑。",
+    "seconds": 13.0
+  },
+  {
+    "id": 36,
+    "width": 34,
+    "ok": true,
+    "unit": "寄存器堆",
+    "confidence": "高",
+    "reason": "主要寄存器名为 cpuregs，且每位由5位寄存器地址译码产生写使能并在写入数据/保持旧值间选择，符合RISC-V通用寄存器堆逻辑。",
+    "seconds": 13.4
+  },
+  {
+    "id": 3,
+    "width": 34,
+    "ok": true,
+    "unit": "寄存器堆",
+    "confidence": "高",
+    "reason": "大量 cpuregs[1..31](18) 由5位写地址译码和写使能控制，在写入数据与保持原值之间选择，符合RISC-V通用寄存器堆特征。",
+    "seconds": 13.9
+  },
+  {
+    "id": 40,
+    "width": 34,
+    "ok": true,
+    "unit": "寄存器堆",
+    "confidence": "高",
+    "reason": "大量 cpuregs[1..31](16) 由5位寄存器号译码和写使能选择写回数据或保持原值，符合 RISC-V 通用寄存器堆位片逻辑。",
+    "seconds": 14.1
+  },
+  {
+    "id": 7,
+    "width": 34,
+    "ok": true,
+    "unit": "寄存器堆",
+    "confidence": "高",
+    "reason": "大量 cpuregs[1..31](8) 由共同写使能和 5 位地址译码选择更新，符合 RISC-V 通用寄存器堆位切片逻辑。",
+    "seconds": 15.2
+  },
+  {
+    "id": 19,
+    "width": 34,
+    "ok": true,
+    "unit": "寄存器堆",
+    "confidence": "高",
+    "reason": "cpuregs[1..31] 同一位由5位地址译码选择写入、否则保持，符合RISC-V通用寄存器堆写端口逻辑。",
+    "seconds": 33.1
+  },
+  {
+    "id": 0,
+    "width": 33,
+    "ok": true,
+    "unit": "寄存器堆",
+    "confidence": "高",
+    "reason": "32位状态直接命名为 cpuregs[0][31:0]，对应 PicoRV32 的通用寄存器堆条目。",
+    "seconds": 6.8
+  },
+  {
+    "id": 44,
+    "width": 33,
+    "ok": true,
+    "unit": "寄存器堆",
+    "confidence": "高",
+    "reason": "cpuregs[1..31](5) 由5位地址译码选择性写入同一写数据位并保持旧值，符合RISC-V通用寄存器堆单比特切片逻辑。",
+    "seconds": 10.7
+  },
+  {
+    "id": 37,
+    "width": 33,
+    "ok": true,
+    "unit": "寄存器堆",
+    "confidence": "高",
+    "reason": "大量信号命名为 cpuregs[bit](9)，每位均为“写使能/写地址译码命中则写入数据，否则保持旧值”的寄存器堆单项更新逻辑。",
+    "seconds": 11.8
+  },
+  {
+    "id": 35,
+    "width": 33,
+    "ok": true,
+    "unit": "寄存器堆",
+    "confidence": "高",
+    "reason": "大量状态位为 cpuregs[*](29)，逻辑是按写地址/写使能选择写入数据或保持原值，符合通用寄存器堆单个寄存器的更新模式。",
+    "seconds": 15.0
+  },
+  {
+    "id": 34,
+    "width": 33,
+    "ok": true,
+    "unit": "寄存器堆",
+    "confidence": "高",
+    "reason": "cpuregs[31:1](17) 由5位地址译码选择单个通用寄存器写入且未更新x0，符合RISC-V寄存器堆写端口逻辑。",
+    "seconds": 22.4
+  },
+  {
+    "id": 22,
+    "width": 33,
+    "ok": true,
+    "unit": "寄存器堆",
+    "confidence": "高",
+    "reason": "大量 cpuregs[*](13) 位由同一写使能/写数据控制，并用 net_12300..net_12304 进行寄存器地址译码后选择性更新、否则保持，符合 ",
+    "seconds": 34.2
+  },
+  {
+    "id": 38,
+    "width": 31,
+    "ok": true,
+    "unit": "寄存器堆",
+    "confidence": "高",
+    "reason": "目标信号为 cpuregs[*](14)，31位按位保持/写入且带写使能与寄存器地址译码特征，符合RISC-V通用寄存器堆中x14的存储逻辑。",
+    "seconds": 6.6
+  },
+  {
+    "id": 39,
+    "width": 31,
+    "ok": true,
+    "unit": "寄存器堆",
+    "confidence": "高",
+    "reason": "信号名为 cpuregs 且逻辑表现为按 5 位地址译码选择寄存器 25、写使能更新否则保持的通用寄存器堆单元。",
+    "seconds": 13.7
+  },
+  {
+    "id": 11,
+    "width": 30,
+    "ok": true,
+    "unit": "其它（PCPI rs2操作数寄存器）",
+    "confidence": "高",
+    "reason": "下一状态寄存器位直接命名为 pcpi_rs2，逻辑在使能时从源寄存器/操作数选择网络装载、否则保持，符合 PCPI 接口 rs2 操作数锁存器特征。",
+    "seconds": 10.1
+  },
+  {
+    "id": 8,
+    "width": 29,
+    "ok": true,
+    "unit": "立即数解码寄存器",
+    "confidence": "高",
+    "reason": "绝大多数下一状态位直接更新 decoded_imm[5:30]，逻辑体现 RISC-V 指令立即数字段选择与符号扩展。",
+    "seconds": 6.4
+  },
+  {
+    "id": 10,
+    "width": 23,
+    "ok": true,
+    "unit": "指令寄存器/指令解码寄存器",
+    "confidence": "高",
+    "reason": "大部分寄存器为 instr_* 解码标志，按 opcode/funct3 条件锁存 load/store/branch/ALU-imm 等指令类型。",
+    "seconds": 25.6
+  },
+  {
+    "id": 5,
+    "width": 19,
+    "ok": true,
+    "unit": "其它（调试/Trace内存写数据寄存器）",
+    "confidence": "中",
+    "reason": "大部分位为 dbg_mem_wdata[8:23]，由调试访存条件控制装载/保持，夹杂少量计数与译码标志位。",
+    "seconds": 11.8
+  },
+  {
+    "id": 24,
+    "width": 16,
+    "ok": true,
+    "unit": "其它",
+    "confidence": "中",
+    "reason": "该组主要是 instr_add/sub/sll 等指令译码标志寄存器，但混入 alu_out_q 和 count_cycle/count_instr 位，属于混",
+    "seconds": 9.2
+  },
+  {
+    "id": 28,
+    "width": 15,
+    "ok": true,
+    "unit": "其它",
+    "confidence": "高",
+    "reason": "信号名和逻辑同时包含 count_cycle/count_instr 性能计数器、latched_rd 指令目的寄存器字段以及 dbg_mem_wdata 调试",
+    "seconds": 15.8
+  },
+  {
+    "id": 29,
+    "width": 13,
+    "ok": true,
+    "unit": "其它",
+    "confidence": "高",
+    "reason": "寄存器保存大量 RISC-V 指令类别译码标志如 instr_lui/instr_jal/is_alu_reg_imm/is_load_store_branch",
+    "seconds": 7.1
+  },
+  {
+    "id": 16,
+    "width": 13,
+    "ok": true,
+    "unit": "指令寄存器",
+    "confidence": "中",
+    "reason": "绝大多数位为 mem_rdata_q 的锁存更新，覆盖指令译码关键位段，符合 PicoRV32 取指后指令/内存读数据寄存器特征。",
+    "seconds": 13.6
+  },
+  {
+    "id": 30,
+    "width": 12,
+    "ok": true,
+    "unit": "其它",
+    "confidence": "高",
+    "reason": "该寄存器组混合包含 decoded_imm、dbg_mem_wstrb、count_cycle/count_instr 和 alu_out_q 等无关信号，不对",
+    "seconds": 10.7
+  },
+  {
+    "id": 25,
+    "width": 10,
+    "ok": true,
+    "unit": "其它",
+    "confidence": "高",
+    "reason": "该10位组混合了count_cycle/count_instr计数器、mem_rdata_q、reg_next_pc和pcpi_rs1/rs2等不同寄存器位，不",
+    "seconds": 6.7
+  },
+  {
+    "id": 21,
+    "width": 9,
+    "ok": true,
+    "unit": "其它",
+    "confidence": "高",
+    "reason": "该9位同时包含count_cycle/count_instr计数器、mem_rdata_q数据锁存、reg_next_pc和pcpi_rs2等不同寄存器位，不构",
+    "seconds": 10.8
+  },
+  {
+    "id": 18,
+    "width": 9,
+    "ok": true,
+    "unit": "其它",
+    "confidence": "高",
+    "reason": "该寄存器组混合了 count_instr/count_cycle 计数器位、reg_next_pc 位和 mem_rdata_q 数据锁存位，不对应单一标准功能",
+    "seconds": 14.2
+  },
+  {
+    "id": 23,
+    "width": 8,
+    "ok": true,
+    "unit": "其它",
+    "confidence": "高",
+    "reason": "该组同时包含 count_cycle/count_instr、mem_rdata_q、reg_next_pc、pcpi_rs2 等不相关寄存器位，非单一功能单元",
+    "seconds": 7.5
+  },
+  {
+    "id": 1,
+    "width": 8,
+    "ok": true,
+    "unit": "流水线状态机",
+    "confidence": "高",
+    "reason": "目标寄存器名为 cpu_state 且为 8位状态编码，下一状态逻辑由大量指令译码/握手条件驱动，符合 PicoRV32 控制状态机。",
+    "seconds": 8.1
+  },
+  {
+    "id": 106,
+    "width": 3,
+    "ok": true,
+    "unit": "移位器",
+    "confidence": "高",
+    "reason": "目标寄存器名为 reg_sh，且逻辑包含移位量/操作数选择与更新特征，对应 PicoRV32 的移位控制寄存器。",
+    "seconds": 10.1
+  },
+  {
+    "id": 56,
+    "width": 2,
+    "ok": true,
+    "unit": "ALU结果寄存器",
+    "confidence": "高",
+    "reason": "目标寄存器名为 alu_out_q，且下一状态由两组操作数位的 XOR/AND/OR 与长进位链构成，符合 ALU 加减/逻辑结果锁存特征。",
+    "seconds": 5.7
+  }
+]

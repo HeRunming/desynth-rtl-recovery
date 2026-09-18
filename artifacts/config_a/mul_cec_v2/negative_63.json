@@ -1,0 +1,10 @@
+{
+  "argv": [
+    "/data/hrm/desynth/tools/oss-cad-suite/bin/yosys-abc",
+    "-c",
+    "&cec -T 45 lhs.aig rhs_flip63.aig"
+  ],
+  "rc": 0,
+  "elapsed_s": 0.0635685920715332,
+  "log_sha256": "bc113e9d578cd85bcfd9ce15ebfcfd7e3f23f321d912b09fecf3495cb1f93a42"
+}

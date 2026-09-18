@@ -1,0 +1,21 @@
+EQUIV picorv32_lift: 0 mismatches / 899820 checks (50000 cycles, 0 all-X checks skipped)
+---- per-signal breakdown ----
+  ok   trap          
+  ok   mem_valid     
+  ok   mem_instr     
+  ok   mem_addr      
+  ok   mem_wdata     
+  ok   mem_wstrb     
+  ok   mem_la_read   
+  ok   mem_la_write  
+  ok   mem_la_addr   
+  ok   mem_la_wdata  
+  ok   mem_la_wstrb  
+  ok   pcpi_valid    
+  ok   pcpi_insn     
+  ok   pcpi_rs1      
+  ok   pcpi_rs2      
+  ok   eoi           
+  ok   trace_valid   
+  ok   trace_data    
+/data/hrm/desynth/work/big/tb_eq_big.v:214: $finish called at 500047000 (1ps)

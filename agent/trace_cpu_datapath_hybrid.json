@@ -1,0 +1,76 @@
+{
+  "top": "cpu_datapath",
+  "mode": "hybrid",
+  "attempts": [
+    {
+      "attempt": 1,
+      "verified": true,
+      "reason": "功能等价已证明",
+      "rtl": "module cpu_datapath(clk, rst, instr, acc, pc);\n  input        clk;\n  input        rst;\n  input  [7:0] instr;\n  output [7:0] acc;\n  output [3:0] pc;\n\n  reg [7:0] acc_reg;\n  reg [3:0] pc_reg;\n\n  wire [1:0] opcode;\n  wire [7:0] operand;\n\n  assign opcode  = instr[7:6];\n  assign operand = {2'b00, instr[5:0]};\n\n  assign acc = acc_reg;\n  assign pc  = pc_reg;\n\n  always @(posedge clk) begin\n    if (rst) begin\n      acc_reg <= 8'h00;\n      pc_reg  <= 4'h0;\n    end else begin\n      case (opcode)\n        2'b00: begin\n          acc_reg <= operand;          // load immediate\n        end\n\n        2'b01: begin\n          acc_reg <= acc_reg + operand; // add immediate\n        end\n\n        2'b10: begin\n          acc_reg <= acc_reg - operand; // subtract immediate\n        end\n\n        2'b11: begin\n          acc_reg <= acc_reg;           // branch/control instruction, accumulator unchanged\n        end\n      endcase\n\n      if ((opcode == 2'b11) && (acc_reg != 8'h00))\n        pc_reg <= instr[3:0];           // branch if accumulator non-zero\n      else\n        pc_reg <= pc_reg + 4'd1;        // next instruction\n    end\n  end\n\nendmodule",
+      "llm_seconds": 37.6
+    }
+  ],
+  "hal_facts": {
+    "total_gates": 182,
+    "num_flip_flops": 12,
+    "top_ports": {
+      "inputs": [
+        "operand(0)",
+        "opcode(1)",
+        "operand(5)",
+        "operand(4)",
+        "operand(2)",
+        "operand(3)",
+        "operand(1)",
+        "clk",
+        "rst",
+        "opcode(0)"
+      ],
+      "outputs": [
+        "acc(5)",
+        "acc(3)",
+        "acc(2)",
+        "acc(1)",
+        "acc(6)",
+        "acc(0)",
+        "pc(3)",
+        "acc(4)",
+        "pc(1)",
+        "pc(0)",
+        "pc(2)",
+        "acc(7)"
+      ]
+    },
+    "gate_type_histogram": {
+      "INV": 18,
+      "AND2": 75,
+      "OR2": 49,
+      "XOR": 24,
+      "MUX": 4,
+      "FF": 12
+    },
+    "register_groups": [
+      {
+        "group_id": 0,
+        "width": 12,
+        "flip_flops": [
+          "_340_",
+          "_341_",
+          "_342_",
+          "_343_",
+          "_344_",
+          "_345_",
+          "_346_",
+          "_347_",
+          "_348_",
+          "_349_",
+          "_350_",
+          "_351_"
+        ]
+      }
+    ]
+  },
+  "success": true,
+  "final_rtl": "module cpu_datapath(clk, rst, instr, acc, pc);\n  input        clk;\n  input        rst;\n  input  [7:0] instr;\n  output [7:0] acc;\n  output [3:0] pc;\n\n  reg [7:0] acc_reg;\n  reg [3:0] pc_reg;\n\n  wire [1:0] opcode;\n  wire [7:0] operand;\n\n  assign opcode  = instr[7:6];\n  assign operand = {2'b00, instr[5:0]};\n\n  assign acc = acc_reg;\n  assign pc  = pc_reg;\n\n  always @(posedge clk) begin\n    if (rst) begin\n      acc_reg <= 8'h00;\n      pc_reg  <= 4'h0;\n    end else begin\n      case (opcode)\n        2'b00: begin\n          acc_reg <= operand;          // load immediate\n        end\n\n        2'b01: begin\n          acc_reg <= acc_reg + operand; // add immediate\n        end\n\n        2'b10: begin\n          acc_reg <= acc_reg - operand; // subtract immediate\n        end\n\n        2'b11: begin\n          acc_reg <= acc_reg;           // branch/control instruction, accumulator unchanged\n        end\n      endcase\n\n      if ((opcode == 2'b11) && (acc_reg != 8'h00))\n        pc_reg <= instr[3:0];           // branch if accumulator non-zero\n      else\n        pc_reg <= pc_reg + 4'd1;        // next instruction\n    end\n  end\n\nendmodule",
+  "attempts_used": 1
+}

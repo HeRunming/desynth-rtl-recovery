@@ -1,0 +1,68 @@
+{
+  "top": "crc8",
+  "mode": "hybrid",
+  "attempts": [
+    {
+      "attempt": 1,
+      "verified": true,
+      "reason": "功能等价已证明",
+      "rtl": "module crc8(clk, rst, data_valid, data_in, crc_out);\n  input clk;\n  input rst;\n  input data_valid;\n  input [7:0] data_in;\n  output reg [7:0] crc_out;\n\n  wire [7:0] c;\n  wire [7:0] d;\n  reg  [7:0] crc_next;\n\n  assign c = crc_out;\n  assign d = data_in;\n\n  always @* begin\n    crc_next[0] = c[7] ^ c[6] ^ c[0] ^ d[7] ^ d[6] ^ d[0];\n    crc_next[1] = c[6] ^ c[1] ^ c[0] ^ d[6] ^ d[1] ^ d[0];\n    crc_next[2] = c[6] ^ c[2] ^ c[1] ^ c[0] ^ d[6] ^ d[2] ^ d[1] ^ d[0];\n    crc_next[3] = c[7] ^ c[3] ^ c[2] ^ c[1] ^ d[7] ^ d[3] ^ d[2] ^ d[1];\n    crc_next[4] = c[4] ^ c[3] ^ c[2] ^ d[4] ^ d[3] ^ d[2];\n    crc_next[5] = c[5] ^ c[4] ^ c[3] ^ d[5] ^ d[4] ^ d[3];\n    crc_next[6] = c[6] ^ c[5] ^ c[4] ^ d[6] ^ d[5] ^ d[4];\n    crc_next[7] = c[7] ^ c[6] ^ c[5] ^ d[7] ^ d[6] ^ d[5];\n  end\n\n  always @(posedge clk) begin\n    if (rst) begin\n      crc_out <= 8'h00;\n    end else if (data_valid) begin\n      crc_out <= crc_next;\n    end\n  end\n\nendmodule",
+      "llm_seconds": 36.9
+    }
+  ],
+  "hal_facts": {
+    "total_gates": 85,
+    "num_flip_flops": 8,
+    "top_ports": {
+      "inputs": [
+        "d(7)",
+        "rst",
+        "d(3)",
+        "d(6)",
+        "d(5)",
+        "d(4)",
+        "d(2)",
+        "data_valid",
+        "d(1)",
+        "d(0)",
+        "clk"
+      ],
+      "outputs": [
+        "c(6)",
+        "c(5)",
+        "c(4)",
+        "c(1)",
+        "c(7)",
+        "c(2)",
+        "c(3)",
+        "c(0)"
+      ]
+    },
+    "gate_type_histogram": {
+      "INV": 6,
+      "XOR": 36,
+      "OR2": 16,
+      "AND2": 19,
+      "FF": 8
+    },
+    "register_groups": [
+      {
+        "group_id": 0,
+        "width": 8,
+        "flip_flops": [
+          "_154_",
+          "_155_",
+          "_156_",
+          "_157_",
+          "_158_",
+          "_159_",
+          "_160_",
+          "_161_"
+        ]
+      }
+    ]
+  },
+  "success": true,
+  "final_rtl": "module crc8(clk, rst, data_valid, data_in, crc_out);\n  input clk;\n  input rst;\n  input data_valid;\n  input [7:0] data_in;\n  output reg [7:0] crc_out;\n\n  wire [7:0] c;\n  wire [7:0] d;\n  reg  [7:0] crc_next;\n\n  assign c = crc_out;\n  assign d = data_in;\n\n  always @* begin\n    crc_next[0] = c[7] ^ c[6] ^ c[0] ^ d[7] ^ d[6] ^ d[0];\n    crc_next[1] = c[6] ^ c[1] ^ c[0] ^ d[6] ^ d[1] ^ d[0];\n    crc_next[2] = c[6] ^ c[2] ^ c[1] ^ c[0] ^ d[6] ^ d[2] ^ d[1] ^ d[0];\n    crc_next[3] = c[7] ^ c[3] ^ c[2] ^ c[1] ^ d[7] ^ d[3] ^ d[2] ^ d[1];\n    crc_next[4] = c[4] ^ c[3] ^ c[2] ^ d[4] ^ d[3] ^ d[2];\n    crc_next[5] = c[5] ^ c[4] ^ c[3] ^ d[5] ^ d[4] ^ d[3];\n    crc_next[6] = c[6] ^ c[5] ^ c[4] ^ d[6] ^ d[5] ^ d[4];\n    crc_next[7] = c[7] ^ c[6] ^ c[5] ^ d[7] ^ d[6] ^ d[5];\n  end\n\n  always @(posedge clk) begin\n    if (rst) begin\n      crc_out <= 8'h00;\n    end else if (data_valid) begin\n      crc_out <= crc_next;\n    end\n  end\n\nendmodule",
+  "attempts_used": 1
+}

@@ -1,0 +1,15 @@
+MUL_STORE cyc=19 addr=00000100 gold=fffffffe dut=fffffffe wstrb=f
+MUL_STORE cyc=36 addr=00000104 gold=ffffffff dut=ffffffff wstrb=f
+MUL_STORE cyc=53 addr=00000108 gold=ffffffff dut=ffffffff wstrb=f
+MUL_STORE cyc=70 addr=0000010c gold=00000001 dut=00000001 wstrb=f
+MUL_STORE cyc=87 addr=00000110 gold=00000000 dut=00000000 wstrb=f
+MUL_STORE cyc=104 addr=00000114 gold=fffff800 dut=fffff800 wstrb=f
+MUL_STORE cyc=121 addr=00000118 gold=00000000 dut=00000000 wstrb=f
+MUL_STORE cyc=138 addr=0000011c gold=00000000 dut=00000000 wstrb=f
+MUL_DIRECTED seed=0 errors=0 stores_gold=8 stores_dut=8 cycles=1499
+MUL_OPCODE funct3=0 gold_handshakes=6 dut_handshakes=6
+MUL_OPCODE funct3=1 gold_handshakes=6 dut_handshakes=6
+MUL_OPCODE funct3=2 gold_handshakes=6 dut_handshakes=6
+MUL_OPCODE funct3=3 gold_handshakes=6 dut_handshakes=6
+DIRECTED_INTERNAL bits=2313 errors=0 checks=3469500
+/data/hrm/desynth/work/big/tb_directed_internal.v:103: $finish called at 15047000 (1ps)

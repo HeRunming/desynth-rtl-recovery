@@ -1,0 +1,57 @@
+/* hal_cells.lib —— 与 HAL example_library.hgl 匹配的最小 Liberty 库
+   目的: 让 Yosys 综合出的网表使用 HAL 认识的门 (AND2/OR2/INV/XOR/MUX/FF...),
+   从而同一份网表 Yosys 和 HAL 都能处理。 */
+library(hal_cells) {
+  time_unit : "1ns";
+  capacitive_load_unit(1, pf);
+
+  /* 反相器 */
+  cell(INV) {
+    area : 1;
+    pin(I) { direction: input; }
+    pin(O) { direction: output; function: "I'"; }
+  }
+  /* 缓冲 */
+  cell(BUF) {
+    area : 1;
+    pin(I) { direction: input; }
+    pin(O) { direction: output; function: "I"; }
+  }
+  /* 2输入与 */
+  cell(AND2) {
+    area : 2;
+    pin(I0) { direction: input; }
+    pin(I1) { direction: input; }
+    pin(O)  { direction: output; function: "(I0 I1)"; }
+  }
+  /* 2输入或 */
+  cell(OR2) {
+    area : 2;
+    pin(I0) { direction: input; }
+    pin(I1) { direction: input; }
+    pin(O)  { direction: output; function: "(I0+I1)"; }
+  }
+  /* 2输入异或 */
+  cell(XOR) {
+    area : 3;
+    pin(I0) { direction: input; }
+    pin(I1) { direction: input; }
+    pin(O)  { direction: output; function: "(I0^I1)"; }
+  }
+  /* 2:1 多路选择器 */
+  cell(MUX) {
+    area : 3;
+    pin(I0) { direction: input; }
+    pin(I1) { direction: input; }
+    pin(S)  { direction: input; }
+    pin(O)  { direction: output; function: "(I0 S')+(I1 S)"; }
+  }
+  /* D触发器 */
+  cell(FF) {
+    area : 5;
+    ff(IQ, IQN) { clocked_on : "C"; next_state : "D"; }
+    pin(C) { direction: input; clock: true; }
+    pin(D) { direction: input; }
+    pin(Q) { direction: output; function: "IQ"; }
+  }
+}

@@ -1,0 +1,16 @@
+{
+  "top": "alu8",
+  "mode": "baseline",
+  "attempts": [
+    {
+      "attempt": 1,
+      "verified": true,
+      "reason": "功能等价已证明",
+      "rtl": "module alu8(a, b, op, result, zero, carry);\n  input  [7:0] a;\n  input  [7:0] b;\n  input  [2:0] op;\n  output [7:0] result;\n  output zero;\n  output carry;\n\n  reg [7:0] result_r;\n  reg       carry_r;\n\n  wire [8:0] add_ext = {1'b0, a} + {1'b0, b};\n  wire [8:0] sub_ext = {1'b0, a} - {1'b0, b};\n\n  always @* begin\n    result_r = 8'b00000000;\n    carry_r  = 1'b0;\n\n    case (op)\n      3'b000: begin\n        result_r = add_ext[7:0];   // add\n        carry_r  = add_ext[8];     // carry out\n      end\n\n      3'b001: begin\n        result_r = sub_ext[7:0];   // subtract: a - b\n        carry_r  = sub_ext[8];     // borrow out\n      end\n\n      3'b010: begin\n        result_r = a & b;\n        carry_r  = 1'b0;\n      end\n\n      3'b011: begin\n        result_r = a | b;\n        carry_r  = 1'b0;\n      end\n\n      3'b100: begin\n        result_r = a ^ b;\n        carry_r  = 1'b0;\n      end\n\n      3'b101: begin\n        result_r = ~a;\n        carry_r  = 1'b0;\n      end\n\n      3'b110: begin\n        result_r = {a[6:0], 1'b0}; // logical shift left by 1\n        carry_r  = 1'b0;\n      end\n\n      3'b111: begin\n        result_r = {1'b0, a[7:1]}; // logical shift right by 1\n        carry_r  = 1'b0;\n      end\n    endcase\n  end\n\n  assign result = result_r;\n  assign carry  = carry_r;\n  assign zero   = (result_r == 8'b00000000);\n\nendmodule",
+      "llm_seconds": 39.5
+    }
+  ],
+  "success": true,
+  "final_rtl": "module alu8(a, b, op, result, zero, carry);\n  input  [7:0] a;\n  input  [7:0] b;\n  input  [2:0] op;\n  output [7:0] result;\n  output zero;\n  output carry;\n\n  reg [7:0] result_r;\n  reg       carry_r;\n\n  wire [8:0] add_ext = {1'b0, a} + {1'b0, b};\n  wire [8:0] sub_ext = {1'b0, a} - {1'b0, b};\n\n  always @* begin\n    result_r = 8'b00000000;\n    carry_r  = 1'b0;\n\n    case (op)\n      3'b000: begin\n        result_r = add_ext[7:0];   // add\n        carry_r  = add_ext[8];     // carry out\n      end\n\n      3'b001: begin\n        result_r = sub_ext[7:0];   // subtract: a - b\n        carry_r  = sub_ext[8];     // borrow out\n      end\n\n      3'b010: begin\n        result_r = a & b;\n        carry_r  = 1'b0;\n      end\n\n      3'b011: begin\n        result_r = a | b;\n        carry_r  = 1'b0;\n      end\n\n      3'b100: begin\n        result_r = a ^ b;\n        carry_r  = 1'b0;\n      end\n\n      3'b101: begin\n        result_r = ~a;\n        carry_r  = 1'b0;\n      end\n\n      3'b110: begin\n        result_r = {a[6:0], 1'b0}; // logical shift left by 1\n        carry_r  = 1'b0;\n      end\n\n      3'b111: begin\n        result_r = {1'b0, a[7:1]}; // logical shift right by 1\n        carry_r  = 1'b0;\n      end\n    endcase\n  end\n\n  assign result = result_r;\n  assign carry  = carry_r;\n  assign zero   = (result_r == 8'b00000000);\n\nendmodule",
+  "attempts_used": 1
+}

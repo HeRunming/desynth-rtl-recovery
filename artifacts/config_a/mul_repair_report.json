@@ -1,0 +1,699 @@
+{
+  "status": "repaired",
+  "proof_sha256": "7750ef6d6db35950ed4adab9502d7bfb147bc96983a927fb2c270fd2e5f06ae4",
+  "proven_bits": [
+    31,
+    32,
+    33,
+    34,
+    35,
+    36,
+    37,
+    38,
+    39,
+    40,
+    41,
+    42,
+    43,
+    44,
+    45,
+    46,
+    47,
+    48,
+    49,
+    50,
+    51,
+    52,
+    53,
+    54,
+    55,
+    56,
+    57,
+    58,
+    59,
+    60,
+    61,
+    62,
+    63
+  ],
+  "mapping": {
+    "27075": {
+      "source": "genblk1.pcpi_mul.rd(0)",
+      "yosys_bit": 6472,
+      "rtl": "unnamed_27075[0]"
+    },
+    "27076": {
+      "source": "genblk1.pcpi_mul.rd(1)",
+      "yosys_bit": 6375,
+      "rtl": "unnamed_27075[1]"
+    },
+    "27077": {
+      "source": "genblk1.pcpi_mul.rd(2)",
+      "yosys_bit": 6278,
+      "rtl": "unnamed_27075[2]"
+    },
+    "27078": {
+      "source": "genblk1.pcpi_mul.rd(3)",
+      "yosys_bit": 6186,
+      "rtl": "unnamed_27075[3]"
+    },
+    "27079": {
+      "source": "genblk1.pcpi_mul.rd(4)",
+      "yosys_bit": 6085,
+      "rtl": "unnamed_27075[4]"
+    },
+    "27080": {
+      "source": "genblk1.pcpi_mul.rd(5)",
+      "yosys_bit": 5955,
+      "rtl": "unnamed_27075[5]"
+    },
+    "27081": {
+      "source": "genblk1.pcpi_mul.rd(6)",
+      "yosys_bit": 5823,
+      "rtl": "unnamed_27075[6]"
+    },
+    "27082": {
+      "source": "genblk1.pcpi_mul.rd(7)",
+      "yosys_bit": 5685,
+      "rtl": "unnamed_27075[7]"
+    },
+    "27083": {
+      "source": "genblk1.pcpi_mul.rd(8)",
+      "yosys_bit": 5557,
+      "rtl": "unnamed_27075[8]"
+    },
+    "27084": {
+      "source": "genblk1.pcpi_mul.rd(9)",
+      "yosys_bit": 5431,
+      "rtl": "unnamed_27075[9]"
+    },
+    "27085": {
+      "source": "genblk1.pcpi_mul.rd(10)",
+      "yosys_bit": 5287,
+      "rtl": "unnamed_27075[10]"
+    },
+    "27086": {
+      "source": "genblk1.pcpi_mul.rd(11)",
+      "yosys_bit": 5173,
+      "rtl": "unnamed_27075[11]"
+    },
+    "27087": {
+      "source": "genblk1.pcpi_mul.rd(12)",
+      "yosys_bit": 5035,
+      "rtl": "unnamed_27075[12]"
+    },
+    "27088": {
+      "source": "genblk1.pcpi_mul.rd(13)",
+      "yosys_bit": 4908,
+      "rtl": "unnamed_27075[13]"
+    },
+    "27089": {
+      "source": "genblk1.pcpi_mul.rd(14)",
+      "yosys_bit": 4782,
+      "rtl": "unnamed_27075[14]"
+    },
+    "27090": {
+      "source": "genblk1.pcpi_mul.rd(15)",
+      "yosys_bit": 4656,
+      "rtl": "unnamed_27075[15]"
+    },
+    "27091": {
+      "source": "genblk1.pcpi_mul.rd(16)",
+      "yosys_bit": 4529,
+      "rtl": "unnamed_27075[16]"
+    },
+    "27092": {
+      "source": "genblk1.pcpi_mul.rd(17)",
+      "yosys_bit": 4405,
+      "rtl": "unnamed_27075[17]"
+    },
+    "27093": {
+      "source": "genblk1.pcpi_mul.rd(18)",
+      "yosys_bit": 4271,
+      "rtl": "unnamed_27075[18]"
+    },
+    "27094": {
+      "source": "genblk1.pcpi_mul.rd(19)",
+      "yosys_bit": 4150,
+      "rtl": "unnamed_27075[19]"
+    },
+    "27095": {
+      "source": "genblk1.pcpi_mul.rd(20)",
+      "yosys_bit": 4026,
+      "rtl": "unnamed_27075[20]"
+    },
+    "27096": {
+      "source": "genblk1.pcpi_mul.rd(21)",
+      "yosys_bit": 3902,
+      "rtl": "unnamed_27075[21]"
+    },
+    "27097": {
+      "source": "genblk1.pcpi_mul.rd(22)",
+      "yosys_bit": 3777,
+      "rtl": "unnamed_27075[22]"
+    },
+    "27098": {
+      "source": "genblk1.pcpi_mul.rd(23)",
+      "yosys_bit": 3653,
+      "rtl": "unnamed_27075[23]"
+    },
+    "27099": {
+      "source": "genblk1.pcpi_mul.rd(24)",
+      "yosys_bit": 3533,
+      "rtl": "unnamed_27075[24]"
+    },
+    "27100": {
+      "source": "genblk1.pcpi_mul.rd(25)",
+      "yosys_bit": 3409,
+      "rtl": "unnamed_27075[25]"
+    },
+    "27101": {
+      "source": "genblk1.pcpi_mul.rd(26)",
+      "yosys_bit": 3285,
+      "rtl": "unnamed_27075[26]"
+    },
+    "27102": {
+      "source": "genblk1.pcpi_mul.rd(27)",
+      "yosys_bit": 3166,
+      "rtl": "unnamed_27075[27]"
+    },
+    "27103": {
+      "source": "genblk1.pcpi_mul.rd(28)",
+      "yosys_bit": 3038,
+      "rtl": "unnamed_27075[28]"
+    },
+    "27104": {
+      "source": "genblk1.pcpi_mul.rd(29)",
+      "yosys_bit": 2920,
+      "rtl": "unnamed_27075[29]"
+    },
+    "27105": {
+      "source": "genblk1.pcpi_mul.rd(30)",
+      "yosys_bit": 2794,
+      "rtl": "unnamed_27075[30]"
+    },
+    "27106": {
+      "source": "genblk1.pcpi_mul.rd(31)",
+      "yosys_bit": 26092,
+      "rtl": "unnamed_27075[31]"
+    },
+    "27107": {
+      "source": "genblk1.pcpi_mul.rd(32)",
+      "yosys_bit": 6474,
+      "rtl": "unnamed_27075[32]"
+    },
+    "27108": {
+      "source": "genblk1.pcpi_mul.rd(33)",
+      "yosys_bit": 6377,
+      "rtl": "unnamed_27075[33]"
+    },
+    "27109": {
+      "source": "genblk1.pcpi_mul.rd(34)",
+      "yosys_bit": 6280,
+      "rtl": "unnamed_27075[34]"
+    },
+    "27110": {
+      "source": "genblk1.pcpi_mul.rd(35)",
+      "yosys_bit": 6187,
+      "rtl": "unnamed_27075[35]"
+    },
+    "27111": {
+      "source": "genblk1.pcpi_mul.rd(36)",
+      "yosys_bit": 6087,
+      "rtl": "unnamed_27075[36]"
+    },
+    "27112": {
+      "source": "genblk1.pcpi_mul.rd(37)",
+      "yosys_bit": 5957,
+      "rtl": "unnamed_27075[37]"
+    },
+    "27113": {
+      "source": "genblk1.pcpi_mul.rd(38)",
+      "yosys_bit": 5825,
+      "rtl": "unnamed_27075[38]"
+    },
+    "27114": {
+      "source": "genblk1.pcpi_mul.rd(39)",
+      "yosys_bit": 5687,
+      "rtl": "control_state_5[0]"
+    },
+    "27115": {
+      "source": "genblk1.pcpi_mul.rd(40)",
+      "yosys_bit": 5559,
+      "rtl": "control_state_5[1]"
+    },
+    "27116": {
+      "source": "genblk1.pcpi_mul.rd(41)",
+      "yosys_bit": 5433,
+      "rtl": "control_state_5[2]"
+    },
+    "27117": {
+      "source": "genblk1.pcpi_mul.rd(42)",
+      "yosys_bit": 5288,
+      "rtl": "control_state_5[3]"
+    },
+    "27118": {
+      "source": "genblk1.pcpi_mul.rd(43)",
+      "yosys_bit": 5175,
+      "rtl": "control_state_5[4]"
+    },
+    "27119": {
+      "source": "genblk1.pcpi_mul.rd(44)",
+      "yosys_bit": 5036,
+      "rtl": "control_state_5[5]"
+    },
+    "27120": {
+      "source": "genblk1.pcpi_mul.rd(45)",
+      "yosys_bit": 4910,
+      "rtl": "control_state_5[6]"
+    },
+    "27121": {
+      "source": "genblk1.pcpi_mul.rd(46)",
+      "yosys_bit": 4784,
+      "rtl": "control_state_5[7]"
+    },
+    "27122": {
+      "source": "genblk1.pcpi_mul.rd(47)",
+      "yosys_bit": 4658,
+      "rtl": "control_state_5[8]"
+    },
+    "27123": {
+      "source": "genblk1.pcpi_mul.rd(48)",
+      "yosys_bit": 4531,
+      "rtl": "control_state_5[9]"
+    },
+    "27124": {
+      "source": "genblk1.pcpi_mul.rd(49)",
+      "yosys_bit": 4407,
+      "rtl": "control_state_5[10]"
+    },
+    "27125": {
+      "source": "genblk1.pcpi_mul.rd(50)",
+      "yosys_bit": 4273,
+      "rtl": "control_state_5[11]"
+    },
+    "27126": {
+      "source": "genblk1.pcpi_mul.rd(51)",
+      "yosys_bit": 4151,
+      "rtl": "control_state_5[12]"
+    },
+    "27127": {
+      "source": "genblk1.pcpi_mul.rd(52)",
+      "yosys_bit": 4028,
+      "rtl": "control_state_5[13]"
+    },
+    "27128": {
+      "source": "genblk1.pcpi_mul.rd(53)",
+      "yosys_bit": 3904,
+      "rtl": "control_state_5[14]"
+    },
+    "27129": {
+      "source": "genblk1.pcpi_mul.rd(54)",
+      "yosys_bit": 3779,
+      "rtl": "control_state_5[15]"
+    },
+    "27130": {
+      "source": "genblk1.pcpi_mul.rd(55)",
+      "yosys_bit": 3655,
+      "rtl": "control_state_5[16]"
+    },
+    "27131": {
+      "source": "genblk1.pcpi_mul.rd(56)",
+      "yosys_bit": 3534,
+      "rtl": "control_state_5[17]"
+    },
+    "27132": {
+      "source": "genblk1.pcpi_mul.rd(57)",
+      "yosys_bit": 3411,
+      "rtl": "control_state_5[18]"
+    },
+    "27133": {
+      "source": "genblk1.pcpi_mul.rd(58)",
+      "yosys_bit": 3287,
+      "rtl": "control_state_5[19]"
+    },
+    "27134": {
+      "source": "genblk1.pcpi_mul.rd(59)",
+      "yosys_bit": 3168,
+      "rtl": "control_state_5[20]"
+    },
+    "27135": {
+      "source": "genblk1.pcpi_mul.rd(60)",
+      "yosys_bit": 3040,
+      "rtl": "control_state_5[21]"
+    },
+    "27136": {
+      "source": "genblk1.pcpi_mul.rd(61)",
+      "yosys_bit": 2921,
+      "rtl": "control_state_5[22]"
+    },
+    "27137": {
+      "source": "genblk1.pcpi_mul.rd(62)",
+      "yosys_bit": 2795,
+      "rtl": "control_state_5[23]"
+    },
+    "27138": {
+      "source": "genblk1.pcpi_mul.rd(63)",
+      "yosys_bit": 26093,
+      "rtl": "control_state_5[24]"
+    },
+    "27140": {
+      "source": "genblk1.pcpi_mul.rs1(0)",
+      "yosys_bit": 956,
+      "rtl": "data_word_a[0]"
+    },
+    "27141": {
+      "source": "genblk1.pcpi_mul.rs1(1)",
+      "yosys_bit": 1175,
+      "rtl": "data_word_a[1]"
+    },
+    "27142": {
+      "source": "genblk1.pcpi_mul.rs1(2)",
+      "yosys_bit": 954,
+      "rtl": "data_word_a[2]"
+    },
+    "27143": {
+      "source": "genblk1.pcpi_mul.rs1(3)",
+      "yosys_bit": 952,
+      "rtl": "data_word_a[3]"
+    },
+    "27144": {
+      "source": "genblk1.pcpi_mul.rs1(4)",
+      "yosys_bit": 1205,
+      "rtl": "data_word_a[4]"
+    },
+    "27145": {
+      "source": "genblk1.pcpi_mul.rs1(5)",
+      "yosys_bit": 950,
+      "rtl": "data_word_a[5]"
+    },
+    "27146": {
+      "source": "genblk1.pcpi_mul.rs1(6)",
+      "yosys_bit": 8345,
+      "rtl": "data_word_a[6]"
+    },
+    "27147": {
+      "source": "genblk1.pcpi_mul.rs1(7)",
+      "yosys_bit": 948,
+      "rtl": "data_word_a[7]"
+    },
+    "27148": {
+      "source": "genblk1.pcpi_mul.rs1(8)",
+      "yosys_bit": 8382,
+      "rtl": "data_word_a[8]"
+    },
+    "27149": {
+      "source": "genblk1.pcpi_mul.rs1(9)",
+      "yosys_bit": 946,
+      "rtl": "data_word_a[9]"
+    },
+    "27150": {
+      "source": "genblk1.pcpi_mul.rs1(10)",
+      "yosys_bit": 8414,
+      "rtl": "data_word_a[10]"
+    },
+    "27151": {
+      "source": "genblk1.pcpi_mul.rs1(11)",
+      "yosys_bit": 944,
+      "rtl": "data_word_a[11]"
+    },
+    "27152": {
+      "source": "genblk1.pcpi_mul.rs1(12)",
+      "yosys_bit": 8421,
+      "rtl": "data_word_a[12]"
+    },
+    "27153": {
+      "source": "genblk1.pcpi_mul.rs1(13)",
+      "yosys_bit": 942,
+      "rtl": "data_word_a[13]"
+    },
+    "27154": {
+      "source": "genblk1.pcpi_mul.rs1(14)",
+      "yosys_bit": 940,
+      "rtl": "data_word_a[14]"
+    },
+    "27155": {
+      "source": "genblk1.pcpi_mul.rs1(15)",
+      "yosys_bit": 8406,
+      "rtl": "data_word_a[15]"
+    },
+    "27156": {
+      "source": "genblk1.pcpi_mul.rs1(16)",
+      "yosys_bit": 938,
+      "rtl": "data_word_a[16]"
+    },
+    "27157": {
+      "source": "genblk1.pcpi_mul.rs1(17)",
+      "yosys_bit": 8471,
+      "rtl": "data_word_a[17]"
+    },
+    "27158": {
+      "source": "genblk1.pcpi_mul.rs1(18)",
+      "yosys_bit": 936,
+      "rtl": "data_word_a[18]"
+    },
+    "27159": {
+      "source": "genblk1.pcpi_mul.rs1(19)",
+      "yosys_bit": 8543,
+      "rtl": "data_word_a[19]"
+    },
+    "27160": {
+      "source": "genblk1.pcpi_mul.rs1(20)",
+      "yosys_bit": 934,
+      "rtl": "data_word_a[20]"
+    },
+    "27161": {
+      "source": "genblk1.pcpi_mul.rs1(21)",
+      "yosys_bit": 8596,
+      "rtl": "data_word_a[21]"
+    },
+    "27162": {
+      "source": "genblk1.pcpi_mul.rs1(22)",
+      "yosys_bit": 932,
+      "rtl": "data_word_a[22]"
+    },
+    "27163": {
+      "source": "genblk1.pcpi_mul.rs1(23)",
+      "yosys_bit": 930,
+      "rtl": "data_word_a[23]"
+    },
+    "27164": {
+      "source": "genblk1.pcpi_mul.rs1(24)",
+      "yosys_bit": 8574,
+      "rtl": "data_word_a[24]"
+    },
+    "27165": {
+      "source": "genblk1.pcpi_mul.rs1(25)",
+      "yosys_bit": 928,
+      "rtl": "data_word_a[25]"
+    },
+    "27166": {
+      "source": "genblk1.pcpi_mul.rs1(26)",
+      "yosys_bit": 8558,
+      "rtl": "data_word_a[26]"
+    },
+    "27167": {
+      "source": "genblk1.pcpi_mul.rs1(27)",
+      "yosys_bit": 926,
+      "rtl": "data_word_a[27]"
+    },
+    "27168": {
+      "source": "genblk1.pcpi_mul.rs1(28)",
+      "yosys_bit": 8579,
+      "rtl": "data_word_a[28]"
+    },
+    "27169": {
+      "source": "genblk1.pcpi_mul.rs1(29)",
+      "yosys_bit": 924,
+      "rtl": "data_word_a[29]"
+    },
+    "27170": {
+      "source": "genblk1.pcpi_mul.rs1(30)",
+      "yosys_bit": 8691,
+      "rtl": "data_word_a[30]"
+    },
+    "27171": {
+      "source": "genblk1.pcpi_mul.rs1(31)",
+      "yosys_bit": 8830,
+      "rtl": "data_word_a[31]"
+    },
+    "27172": {
+      "source": "genblk1.pcpi_mul.rs1(32)",
+      "yosys_bit": 8826,
+      "rtl": "data_word_a[32]"
+    },
+    "27173": {
+      "source": "genblk1.pcpi_mul.rs2(0)",
+      "yosys_bit": 1174,
+      "rtl": "input_capture_reg[0]"
+    },
+    "27174": {
+      "source": "genblk1.pcpi_mul.rs2(1)",
+      "yosys_bit": 1172,
+      "rtl": "input_capture_reg[1]"
+    },
+    "27175": {
+      "source": "genblk1.pcpi_mul.rs2(2)",
+      "yosys_bit": 1181,
+      "rtl": "input_capture_reg[2]"
+    },
+    "27176": {
+      "source": "genblk1.pcpi_mul.rs2(3)",
+      "yosys_bit": 958,
+      "rtl": "input_capture_reg[3]"
+    },
+    "27177": {
+      "source": "genblk1.pcpi_mul.rs2(4)",
+      "yosys_bit": 1209,
+      "rtl": "input_capture_reg[4]"
+    },
+    "27178": {
+      "source": "genblk1.pcpi_mul.rs2(5)",
+      "yosys_bit": 1230,
+      "rtl": "input_capture_reg[5]"
+    },
+    "27179": {
+      "source": "genblk1.pcpi_mul.rs2(6)",
+      "yosys_bit": 960,
+      "rtl": "input_capture_reg[6]"
+    },
+    "27180": {
+      "source": "genblk1.pcpi_mul.rs2(7)",
+      "yosys_bit": 9209,
+      "rtl": "input_capture_reg[7]"
+    },
+    "27181": {
+      "source": "genblk1.pcpi_mul.rs2(8)",
+      "yosys_bit": 9205,
+      "rtl": "input_capture_reg[8]"
+    },
+    "27182": {
+      "source": "genblk1.pcpi_mul.rs2(9)",
+      "yosys_bit": 962,
+      "rtl": "input_capture_reg[9]"
+    },
+    "27183": {
+      "source": "genblk1.pcpi_mul.rs2(10)",
+      "yosys_bit": 8940,
+      "rtl": "input_capture_reg[10]"
+    },
+    "27184": {
+      "source": "genblk1.pcpi_mul.rs2(11)",
+      "yosys_bit": 8942,
+      "rtl": "input_capture_reg[11]"
+    },
+    "27185": {
+      "source": "genblk1.pcpi_mul.rs2(12)",
+      "yosys_bit": 965,
+      "rtl": "input_capture_reg[12]"
+    },
+    "27186": {
+      "source": "genblk1.pcpi_mul.rs2(13)",
+      "yosys_bit": 8935,
+      "rtl": "input_capture_reg[13]"
+    },
+    "27187": {
+      "source": "genblk1.pcpi_mul.rs2(14)",
+      "yosys_bit": 8931,
+      "rtl": "input_capture_reg[14]"
+    },
+    "27188": {
+      "source": "genblk1.pcpi_mul.rs2(15)",
+      "yosys_bit": 967,
+      "rtl": "input_capture_reg[15]"
+    },
+    "27189": {
+      "source": "genblk1.pcpi_mul.rs2(16)",
+      "yosys_bit": 8958,
+      "rtl": "input_capture_reg[16]"
+    },
+    "27190": {
+      "source": "genblk1.pcpi_mul.rs2(17)",
+      "yosys_bit": 8954,
+      "rtl": "input_capture_reg[17]"
+    },
+    "27191": {
+      "source": "genblk1.pcpi_mul.rs2(18)",
+      "yosys_bit": 971,
+      "rtl": "input_capture_reg[18]"
+    },
+    "27192": {
+      "source": "genblk1.pcpi_mul.rs2(19)",
+      "yosys_bit": 8977,
+      "rtl": "input_capture_reg[19]"
+    },
+    "27193": {
+      "source": "genblk1.pcpi_mul.rs2(20)",
+      "yosys_bit": 8979,
+      "rtl": "input_capture_reg[20]"
+    },
+    "27194": {
+      "source": "genblk1.pcpi_mul.rs2(21)",
+      "yosys_bit": 973,
+      "rtl": "input_capture_reg[21]"
+    },
+    "27195": {
+      "source": "genblk1.pcpi_mul.rs2(22)",
+      "yosys_bit": 8827,
+      "rtl": "input_capture_reg[22]"
+    },
+    "27196": {
+      "source": "genblk1.pcpi_mul.rs2(23)",
+      "yosys_bit": 975,
+      "rtl": "input_capture_reg[23]"
+    },
+    "27197": {
+      "source": "genblk1.pcpi_mul.rs2(24)",
+      "yosys_bit": 8831,
+      "rtl": "input_capture_reg[24]"
+    },
+    "27198": {
+      "source": "genblk1.pcpi_mul.rs2(25)",
+      "yosys_bit": 8813,
+      "rtl": "input_capture_reg[25]"
+    },
+    "27199": {
+      "source": "genblk1.pcpi_mul.rs2(26)",
+      "yosys_bit": 8806,
+      "rtl": "input_capture_reg[26]"
+    },
+    "27200": {
+      "source": "genblk1.pcpi_mul.rs2(27)",
+      "yosys_bit": 8808,
+      "rtl": "input_capture_reg[27]"
+    },
+    "27201": {
+      "source": "genblk1.pcpi_mul.rs2(28)",
+      "yosys_bit": 8565,
+      "rtl": "input_capture_reg[28]"
+    },
+    "27202": {
+      "source": "genblk1.pcpi_mul.rs2(29)",
+      "yosys_bit": 977,
+      "rtl": "input_capture_reg[29]"
+    },
+    "27203": {
+      "source": "genblk1.pcpi_mul.rs2(30)",
+      "yosys_bit": 8560,
+      "rtl": "input_capture_reg[30]"
+    },
+    "27204": {
+      "source": "genblk1.pcpi_mul.rs2(31)",
+      "yosys_bit": 8575,
+      "rtl": "input_capture_reg[31]"
+    },
+    "27205": {
+      "source": "genblk1.pcpi_mul.rs2(32)",
+      "yosys_bit": 979,
+      "rtl": "data_word_b_msb_flag"
+    }
+  },
+  "sha256": {
+    "pico_big_lift.v": "e8660b2efc3dad678ace21109160dcb7ed83ca79da59c9df80dbdfa26cb6886a",
+    "pico_big_lift_mul_repaired.v": "621db42bcc2eb159b7129a97cb522cd9e9317517ffcdaf82b59db3a3a5b6ab9b",
+    "big_mech_cse.json": "67416bd42b9d372bf69d254ced30915cac595379b9beaddb1b3b85ac1622a25a",
+    "big_names.json": "1d38c17196d0fa90548dffdd40265bc8f859a05e90f320c60867c8e42881e104",
+    "pico_big_netlist.v": "db8d9a47a94287feba56e96ffe09482f99fe19d0205e8ea07048af1902924076",
+    "pico_big_netlist.json": "8f10b9a4a331dab1e0a6de055508ca10715a194fea44286d87d2cef825138f56"
+  }
+}

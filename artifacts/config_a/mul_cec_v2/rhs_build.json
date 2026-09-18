@@ -1,0 +1,13 @@
+{
+  "argv": [
+    "/data/hrm/desynth/tools/oss-cad-suite/bin/yosys",
+    "-s",
+    "rhs.ys"
+  ],
+  "limit_s": 120,
+  "started": 1789628335.3399012,
+  "status": "finished",
+  "pid": 2090469,
+  "rc": 0,
+  "elapsed_s": 1.2668371200561523
+}

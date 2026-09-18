@@ -1,0 +1,2 @@
+======== ABC command line "read_aiger lhs.aig; print_stats"
+[1;37mlhs                           :[0m i/o =   66/   64  lat =    0  and =  12498  lev =140

@@ -1,0 +1,16 @@
+{
+  "top": "crc8",
+  "mode": "baseline",
+  "attempts": [
+    {
+      "attempt": 1,
+      "verified": true,
+      "reason": "功能等价已证明",
+      "rtl": "module crc8 (\n    input        clk,\n    input        rst,\n    input        data_valid,\n    input  [7:0] data_in,\n    output reg [7:0] crc_out\n);\n\n  wire [7:0] c = crc_out;\n  wire [7:0] d = data_in;\n\n  wire [7:0] crc_next;\n\n  assign crc_next[0] = c[7] ^ c[6] ^ c[0] ^ d[7] ^ d[6] ^ d[0];\n  assign crc_next[1] = c[6] ^ c[1] ^ c[0] ^ d[6] ^ d[1] ^ d[0];\n  assign crc_next[2] = c[6] ^ c[2] ^ c[1] ^ c[0] ^ d[6] ^ d[2] ^ d[1] ^ d[0];\n  assign crc_next[3] = c[7] ^ c[3] ^ c[2] ^ c[1] ^ d[7] ^ d[3] ^ d[2] ^ d[1];\n  assign crc_next[4] = c[4] ^ c[3] ^ c[2] ^ d[4] ^ d[3] ^ d[2];\n  assign crc_next[5] = c[5] ^ c[4] ^ c[3] ^ d[5] ^ d[4] ^ d[3];\n  assign crc_next[6] = c[6] ^ c[5] ^ c[4] ^ d[6] ^ d[5] ^ d[4];\n  assign crc_next[7] = c[7] ^ c[6] ^ c[5] ^ d[7] ^ d[6] ^ d[5];\n\n  always @(posedge clk) begin\n    if (rst) begin\n      crc_out <= 8'h00;\n    end else if (data_valid) begin\n      crc_out <= crc_next;\n    end\n  end\n\nendmodule",
+      "llm_seconds": 38.0
+    }
+  ],
+  "success": true,
+  "final_rtl": "module crc8 (\n    input        clk,\n    input        rst,\n    input        data_valid,\n    input  [7:0] data_in,\n    output reg [7:0] crc_out\n);\n\n  wire [7:0] c = crc_out;\n  wire [7:0] d = data_in;\n\n  wire [7:0] crc_next;\n\n  assign crc_next[0] = c[7] ^ c[6] ^ c[0] ^ d[7] ^ d[6] ^ d[0];\n  assign crc_next[1] = c[6] ^ c[1] ^ c[0] ^ d[6] ^ d[1] ^ d[0];\n  assign crc_next[2] = c[6] ^ c[2] ^ c[1] ^ c[0] ^ d[6] ^ d[2] ^ d[1] ^ d[0];\n  assign crc_next[3] = c[7] ^ c[3] ^ c[2] ^ c[1] ^ d[7] ^ d[3] ^ d[2] ^ d[1];\n  assign crc_next[4] = c[4] ^ c[3] ^ c[2] ^ d[4] ^ d[3] ^ d[2];\n  assign crc_next[5] = c[5] ^ c[4] ^ c[3] ^ d[5] ^ d[4] ^ d[3];\n  assign crc_next[6] = c[6] ^ c[5] ^ c[4] ^ d[6] ^ d[5] ^ d[4];\n  assign crc_next[7] = c[7] ^ c[6] ^ c[5] ^ d[7] ^ d[6] ^ d[5];\n\n  always @(posedge clk) begin\n    if (rst) begin\n      crc_out <= 8'h00;\n    end else if (data_valid) begin\n      crc_out <= crc_next;\n    end\n  end\n\nendmodule",
+  "attempts_used": 1
+}

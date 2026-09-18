@@ -1,0 +1,4 @@
+# Preserve formal inputs and original tool output byte-for-byte for hash verification.
+*.aig binary
+*.log -text -whitespace
+artifacts/** -text

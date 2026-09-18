@@ -1,0 +1,273 @@
+{
+  "top": "fifo",
+  "mode": "hybrid",
+  "attempts": [
+    {
+      "attempt": 1,
+      "verified": false,
+      "reason": "ERROR: Gate module contains memories or processes. Run 'memory' or 'proc' respectively.",
+      "rtl": "module fifo(clk, rst, wr_en, rd_en, din, dout, full, empty);\n  input clk;\n  input rst;\n  input wr_en;\n  input rd_en;\n  input [7:0] din;\n  output reg [7:0] dout;\n  output full;\n  output empty;\n\n  reg [7:0] mem [0:15];\n  reg [4:0] wr_ptr;\n  reg [4:0] rd_ptr;\n\n  wire ptr_addr_equal;\n  wire write_valid;\n  wire read_valid;\n\n  assign ptr_addr_equal = (wr_ptr[3:0] == rd_ptr[3:0]);\n\n  assign empty = ptr_addr_equal && (wr_ptr[4] == rd_ptr[4]);\n  assign full  = ptr_addr_equal && (wr_ptr[4] != rd_ptr[4]);\n\n  assign write_valid = wr_en && !full;\n  assign read_valid  = rd_en && !empty;\n\n  always @(posedge clk) begin\n    if (rst) begin\n      wr_ptr <= 5'd0;\n      rd_ptr <= 5'd0;\n      dout   <= 8'd0;\n    end else begin\n      if (write_valid) begin\n        mem[wr_ptr[3:0]] <= din;\n        wr_ptr <= wr_ptr + 5'd1;\n      end\n\n      if (read_valid) begin\n        dout <= mem[rd_ptr[3:0]];\n        rd_ptr <= rd_ptr + 5'd1;\n      end\n    end\n  end\n\nendmodule",
+      "llm_seconds": 24.0
+    },
+    {
+      "attempt": 2,
+      "verified": false,
+      "reason": "ERROR: No SAT model available for cell mem_ff[126]_gate ($array:126:128:\\$_DFF_P_).",
+      "rtl": "module fifo(clk, rst, wr_en, rd_en, din, dout, full, empty);\n  input        clk;\n  input        rst;\n  input        wr_en;\n  input        rd_en;\n  input  [7:0] din;\n  output [7:0] dout;\n  output       full;\n  output       empty;\n\n  wire [4:0]   wr_ptr;\n  wire [4:0]   rd_ptr;\n  wire [4:0]   wr_ptr_d;\n  wire [4:0]   rd_ptr_d;\n\n  wire [127:0] mem_q;\n  wire [127:0] mem_d;\n\n  wire [7:0]   read_data;\n  wire         same_addr;\n  wire         write_valid;\n  wire         read_valid;\n\n  assign same_addr = (wr_ptr[3:0] == rd_ptr[3:0]);\n  assign empty     = same_addr & (wr_ptr[4] == rd_ptr[4]);\n  assign full      = same_addr & (wr_ptr[4] != rd_ptr[4]);\n\n  assign write_valid = wr_en & ~full;\n  assign read_valid  = rd_en & ~empty;\n\n  assign wr_ptr_d = rst ? 5'd0 : (write_valid ? (wr_ptr + 5'd1) : wr_ptr);\n  assign rd_ptr_d = rst ? 5'd0 : (read_valid  ? (rd_ptr + 5'd1) : rd_ptr);\n\n  assign read_data =\n      (rd_ptr[3:0] == 4'd0)  ? mem_q[7:0]     :\n      (rd_ptr[3:0] == 4'd1)  ? mem_q[15:8]    :\n      (rd_ptr[3:0] == 4'd2)  ? mem_q[23:16]   :\n      (rd_ptr[3:0] == 4'd3)  ? mem_q[31:24]   :\n      (rd_ptr[3:0] == 4'd4)  ? mem_q[39:32]   :\n      (rd_ptr[3:0] == 4'd5)  ? mem_q[47:40]   :\n      (rd_ptr[3:0] == 4'd6)  ? mem_q[55:48]   :\n      (rd_ptr[3:0] == 4'd7)  ? mem_q[63:56]   :\n      (rd_ptr[3:0] == 4'd8)  ? mem_q[71:64]   :\n      (rd_ptr[3:0] == 4'd9)  ? mem_q[79:72]   :\n      (rd_ptr[3:0] == 4'd10) ? mem_q[87:80]   :\n      (rd_ptr[3:0] == 4'd11) ? mem_q[95:88]   :\n      (rd_ptr[3:0] == 4'd12) ? mem_q[103:96]  :\n      (rd_ptr[3:0] == 4'd13) ? mem_q[111:104] :\n      (rd_ptr[3:0] == 4'd14) ? mem_q[119:112] :\n                                mem_q[127:120];\n\n  assign mem_d[7:0]     = (!rst && write_valid && (wr_ptr[3:0] == 4'd0))  ? din : mem_q[7:0];\n  assign mem_d[15:8]    = (!rst && write_valid && (wr_ptr[3:0] == 4'd1))  ? din : mem_q[15:8];\n  assign mem_d[23:16]   = (!rst && write_valid && (wr_ptr[3:0] == 4'd2))  ? din : mem_q[23:16];\n  assign mem_d[31:24]   = (!rst && write_valid && (wr_ptr[3:0] == 4'd3))  ? din : mem_q[31:24];\n  assign mem_d[39:32]   = (!rst && write_valid && (wr_ptr[3:0] == 4'd4))  ? din : mem_q[39:32];\n  assign mem_d[47:40]   = (!rst && write_valid && (wr_ptr[3:0] == 4'd5))  ? din : mem_q[47:40];\n  assign mem_d[55:48]   = (!rst && write_valid && (wr_ptr[3:0] == 4'd6))  ? din : mem_q[55:48];\n  assign mem_d[63:56]   = (!rst && write_valid && (wr_ptr[3:0] == 4'd7))  ? din : mem_q[63:56];\n  assign mem_d[71:64]   = (!rst && write_valid && (wr_ptr[3:0] == 4'd8))  ? din : mem_q[71:64];\n  assign mem_d[79:72]   = (!rst && write_valid && (wr_ptr[3:0] == 4'd9))  ? din : mem_q[79:72];\n  assign mem_d[87:80]   = (!rst && write_valid && (wr_ptr[3:0] == 4'd10)) ? din : mem_q[87:80];\n  assign mem_d[95:88]   = (!rst && write_valid && (wr_ptr[3:0] == 4'd11)) ? din : mem_q[95:88];\n  assign mem_d[103:96]  = (!rst && write_valid && (wr_ptr[3:0] == 4'd12)) ? din : mem_q[103:96];\n  assign mem_d[111:104] = (!rst && write_valid && (wr_ptr[3:0] == 4'd13)) ? din : mem_q[111:104];\n  assign mem_d[119:112] = (!rst && write_valid && (wr_ptr[3:0] == 4'd14)) ? din : mem_q[119:112];\n  assign mem_d[127:120] = (!rst && write_valid && (wr_ptr[3:0] == 4'd15)) ? din : mem_q[127:120];\n\n  wire [7:0] dout_d;\n  assign dout_d = rst ? 8'd0 : (read_valid ? read_data : dout);\n\n  \\$_DFF_P_ wr_ptr_ff [4:0] (\n    .C(clk),\n    .D(wr_ptr_d),\n    .Q(wr_ptr)\n  );\n\n  \\$_DFF_P_ rd_ptr_ff [4:0] (\n    .C(clk),\n    .D(rd_ptr_d),\n    .Q(rd_ptr)\n  );\n\n  \\$_DFF_P_ dout_ff [7:0] (\n    .C(clk),\n    .D(dout_d),\n    .Q(dout)\n  );\n\n  \\$_DFF_P_ mem_ff [127:0] (\n    .C(clk),\n    .D(mem_d),\n    .Q(mem_q)\n  );\n\nendmodule",
+      "llm_seconds": 68.2
+    },
+    {
+      "attempt": 3,
+      "verified": false,
+      "reason": "ERROR: Found 8 unproven $equiv cells in 'equiv_status -assert'.",
+      "rtl": "module fifo(clk, rst, wr_en, rd_en, din, dout, full, empty);\n  input        clk;\n  input        rst;\n  input        wr_en;\n  input        rd_en;\n  input  [7:0] din;\n  output [7:0] dout;\n  output       full;\n  output       empty;\n\n  reg  [4:0]   wr_ptr;\n  reg  [4:0]   rd_ptr;\n  reg  [7:0]   dout;\n  reg  [127:0] mem_q;\n\n  wire         same_addr;\n  wire         write_valid;\n  wire         read_valid;\n  reg  [7:0]   read_data;\n\n  assign same_addr = (wr_ptr[3:0] == rd_ptr[3:0]);\n  assign empty     = same_addr && (wr_ptr[4] == rd_ptr[4]);\n  assign full      = same_addr && (wr_ptr[4] != rd_ptr[4]);\n\n  assign write_valid = wr_en && !full;\n  assign read_valid  = rd_en && !empty;\n\n  always @(*) begin\n    case (rd_ptr[3:0])\n      4'd0:  read_data = mem_q[7:0];\n      4'd1:  read_data = mem_q[15:8];\n      4'd2:  read_data = mem_q[23:16];\n      4'd3:  read_data = mem_q[31:24];\n      4'd4:  read_data = mem_q[39:32];\n      4'd5:  read_data = mem_q[47:40];\n      4'd6:  read_data = mem_q[55:48];\n      4'd7:  read_data = mem_q[63:56];\n      4'd8:  read_data = mem_q[71:64];\n      4'd9:  read_data = mem_q[79:72];\n      4'd10: read_data = mem_q[87:80];\n      4'd11: read_data = mem_q[95:88];\n      4'd12: read_data = mem_q[103:96];\n      4'd13: read_data = mem_q[111:104];\n      4'd14: read_data = mem_q[119:112];\n      4'd15: read_data = mem_q[127:120];\n    endcase\n  end\n\n  always @(posedge clk) begin\n    if (rst) begin\n      wr_ptr <= 5'd0;\n      rd_ptr <= 5'd0;\n      dout   <= 8'd0;\n      mem_q  <= mem_q;\n    end else begin\n      if (write_valid) begin\n        wr_ptr <= wr_ptr + 5'd1;\n        case (wr_ptr[3:0])\n          4'd0:  mem_q[7:0]     <= din;\n          4'd1:  mem_q[15:8]    <= din;\n          4'd2:  mem_q[23:16]   <= din;\n          4'd3:  mem_q[31:24]   <= din;\n          4'd4:  mem_q[39:32]   <= din;\n          4'd5:  mem_q[47:40]   <= din;\n          4'd6:  mem_q[55:48]   <= din;\n          4'd7:  mem_q[63:56]   <= din;\n          4'd8:  mem_q[71:64]   <= din;\n          4'd9:  mem_q[79:72]   <= din;\n          4'd10: mem_q[87:80]   <= din;\n          4'd11: mem_q[95:88]   <= din;\n          4'd12: mem_q[103:96]  <= din;\n          4'd13: mem_q[111:104] <= din;\n          4'd14: mem_q[119:112] <= din;\n          4'd15: mem_q[127:120] <= din;\n        endcase\n      end else begin\n        wr_ptr <= wr_ptr;\n        mem_q  <= mem_q;\n      end\n\n      if (read_valid) begin\n        rd_ptr <= rd_ptr + 5'd1;\n        dout   <= read_data;\n      end else begin\n        rd_ptr <= rd_ptr;\n        dout   <= dout;\n      end\n    end\n  end\n\nendmodule",
+      "llm_seconds": 29.7
+    },
+    {
+      "attempt": 4,
+      "verified": false,
+      "reason": "ERROR: Found 8 unproven $equiv cells in 'equiv_status -assert'.",
+      "rtl": "module fifo(clk, rst, wr_en, rd_en, din, dout, full, empty);\n  input        clk;\n  input        rst;\n  input        wr_en;\n  input        rd_en;\n  input  [7:0] din;\n  output [7:0] dout;\n  output       full;\n  output       empty;\n\n  reg  [4:0]   wr_ptr;\n  reg  [4:0]   rd_ptr;\n  reg  [127:0] mem_q;\n\n  wire         ptr_addr_equal;\n  wire         write_valid;\n  wire         read_valid;\n\n  assign ptr_addr_equal = (wr_ptr[3:0] == rd_ptr[3:0]);\n\n  assign empty = ptr_addr_equal && (wr_ptr[4] == rd_ptr[4]);\n  assign full  = ptr_addr_equal && (wr_ptr[4] != rd_ptr[4]);\n\n  assign write_valid = wr_en && !full;\n  assign read_valid  = rd_en && !empty;\n\n  assign dout =\n      (rd_ptr[3:0] == 4'd0 ) ? mem_q[7:0]       :\n      (rd_ptr[3:0] == 4'd1 ) ? mem_q[15:8]      :\n      (rd_ptr[3:0] == 4'd2 ) ? mem_q[23:16]     :\n      (rd_ptr[3:0] == 4'd3 ) ? mem_q[31:24]     :\n      (rd_ptr[3:0] == 4'd4 ) ? mem_q[39:32]     :\n      (rd_ptr[3:0] == 4'd5 ) ? mem_q[47:40]     :\n      (rd_ptr[3:0] == 4'd6 ) ? mem_q[55:48]     :\n      (rd_ptr[3:0] == 4'd7 ) ? mem_q[63:56]     :\n      (rd_ptr[3:0] == 4'd8 ) ? mem_q[71:64]     :\n      (rd_ptr[3:0] == 4'd9 ) ? mem_q[79:72]     :\n      (rd_ptr[3:0] == 4'd10) ? mem_q[87:80]     :\n      (rd_ptr[3:0] == 4'd11) ? mem_q[95:88]     :\n      (rd_ptr[3:0] == 4'd12) ? mem_q[103:96]    :\n      (rd_ptr[3:0] == 4'd13) ? mem_q[111:104]   :\n      (rd_ptr[3:0] == 4'd14) ? mem_q[119:112]   :\n                               mem_q[127:120];\n\n  always @(posedge clk) begin\n    if (rst) begin\n      wr_ptr <= 5'd0;\n      rd_ptr <= 5'd0;\n    end else begin\n      if (write_valid)\n        wr_ptr <= wr_ptr + 5'd1;\n\n      if (read_valid)\n        rd_ptr <= rd_ptr + 5'd1;\n    end\n  end\n\n  always @(posedge clk) begin\n    if (write_valid) begin\n      case (wr_ptr[3:0])\n        4'd0:  mem_q[7:0]       <= din;\n        4'd1:  mem_q[15:8]      <= din;\n        4'd2:  mem_q[23:16]     <= din;\n        4'd3:  mem_q[31:24]     <= din;\n        4'd4:  mem_q[39:32]     <= din;\n        4'd5:  mem_q[47:40]     <= din;\n        4'd6:  mem_q[55:48]     <= din;\n        4'd7:  mem_q[63:56]     <= din;\n        4'd8:  mem_q[71:64]     <= din;\n        4'd9:  mem_q[79:72]     <= din;\n        4'd10: mem_q[87:80]     <= din;\n        4'd11: mem_q[95:88]     <= din;\n        4'd12: mem_q[103:96]    <= din;\n        4'd13: mem_q[111:104]   <= din;\n        4'd14: mem_q[119:112]   <= din;\n        4'd15: mem_q[127:120]   <= din;\n      endcase\n    end\n  end\n\nendmodule",
+      "llm_seconds": 29.3
+    }
+  ],
+  "hal_facts": {
+    "total_gates": 649,
+    "num_flip_flops": 146,
+    "top_ports": {
+      "inputs": [
+        "din(7)",
+        "rd_en",
+        "din(6)",
+        "din(2)",
+        "din(4)",
+        "din(3)",
+        "clk",
+        "rst",
+        "din(0)",
+        "din(5)",
+        "wr_en",
+        "din(1)"
+      ],
+      "outputs": [
+        "empty",
+        "dout(6)",
+        "dout(4)",
+        "dout(2)",
+        "dout(7)",
+        "dout(0)",
+        "full",
+        "dout(3)",
+        "dout(5)",
+        "dout(1)"
+      ]
+    },
+    "gate_type_histogram": {
+      "INV": 28,
+      "XOR": 7,
+      "OR2": 125,
+      "AND2": 164,
+      "MUX": 179,
+      "FF": 146
+    },
+    "register_groups": [
+      {
+        "group_id": 0,
+        "width": 128,
+        "flip_flops": [
+          "_1004_",
+          "_1005_",
+          "_1006_",
+          "_1007_",
+          "_1008_",
+          "_1009_",
+          "_1010_",
+          "_1011_",
+          "_1012_",
+          "_1013_",
+          "_1014_",
+          "_1015_",
+          "_1016_",
+          "_1017_",
+          "_1018_",
+          "_1019_",
+          "_1020_",
+          "_1021_",
+          "_1022_",
+          "_1023_",
+          "_1024_",
+          "_1025_",
+          "_1026_",
+          "_1027_",
+          "_1028_",
+          "_1029_",
+          "_1030_",
+          "_1031_",
+          "_1032_",
+          "_1033_",
+          "_1034_",
+          "_1035_",
+          "_1036_",
+          "_1037_",
+          "_1038_",
+          "_1039_",
+          "_1040_",
+          "_1041_",
+          "_1042_",
+          "_1043_",
+          "_1044_",
+          "_1045_",
+          "_1046_",
+          "_1047_",
+          "_1048_",
+          "_1049_",
+          "_1050_",
+          "_1051_",
+          "_1052_",
+          "_1053_",
+          "_1054_",
+          "_1055_",
+          "_1056_",
+          "_1057_",
+          "_1058_",
+          "_1059_",
+          "_1060_",
+          "_1061_",
+          "_1062_",
+          "_1063_",
+          "_1064_",
+          "_1065_",
+          "_1066_",
+          "_1067_",
+          "_1068_",
+          "_1069_",
+          "_1070_",
+          "_1071_",
+          "_1072_",
+          "_1073_",
+          "_1074_",
+          "_1075_",
+          "_1076_",
+          "_1077_",
+          "_1078_",
+          "_1079_",
+          "_1080_",
+          "_1081_",
+          "_1082_",
+          "_1083_",
+          "_1084_",
+          "_1085_",
+          "_1086_",
+          "_1087_",
+          "_1088_",
+          "_1089_",
+          "_1090_",
+          "_1091_",
+          "_1092_",
+          "_1093_",
+          "_1094_",
+          "_1095_",
+          "_1096_",
+          "_1097_",
+          "_1098_",
+          "_1099_",
+          "_1100_",
+          "_1101_",
+          "_1102_",
+          "_1103_",
+          "_1104_",
+          "_1105_",
+          "_1106_",
+          "_1107_",
+          "_1108_",
+          "_1109_",
+          "_1110_",
+          "_1111_",
+          "_1112_",
+          "_1113_",
+          "_1114_",
+          "_1115_",
+          "_1116_",
+          "_1117_",
+          "_1118_",
+          "_1119_",
+          "_1120_",
+          "_1121_",
+          "_1122_",
+          "_1123_",
+          "_1124_",
+          "_1125_",
+          "_1126_",
+          "_1127_",
+          "_1128_",
+          "_1129_",
+          "_1130_",
+          "_1131_"
+        ]
+      },
+      {
+        "group_id": 1,
+        "width": 8,
+        "flip_flops": [
+          "_1142_",
+          "_1143_",
+          "_1144_",
+          "_1145_",
+          "_1146_",
+          "_1147_",
+          "_1148_",
+          "_1149_"
+        ]
+      },
+      {
+        "group_id": 2,
+        "width": 5,
+        "flip_flops": [
+          "_1137_",
+          "_1138_",
+          "_1139_",
+          "_1140_",
+          "_1141_"
+        ]
+      },
+      {
+        "group_id": 3,
+        "width": 1,
+        "flip_flops": [
+          "_1132_"
+        ]
+      },
+      {
+        "group_id": 4,
+        "width": 1,
+        "flip_flops": [
+          "_1133_"
+        ]
+      },
+      {
+        "group_id": 5,
+        "width": 1,
+        "flip_flops": [
+          "_1134_"
+        ]
+      },
+      {
+        "group_id": 6,
+        "width": 1,
+        "flip_flops": [
+          "_1135_"
+        ]
+      },
+      {
+        "group_id": 7,
+        "width": 1,
+        "flip_flops": [
+          "_1136_"
+        ]
+      }
+    ]
+  },
+  "success": false,
+  "final_rtl": "module fifo(clk, rst, wr_en, rd_en, din, dout, full, empty);\n  input        clk;\n  input        rst;\n  input        wr_en;\n  input        rd_en;\n  input  [7:0] din;\n  output [7:0] dout;\n  output       full;\n  output       empty;\n\n  reg  [4:0]   wr_ptr;\n  reg  [4:0]   rd_ptr;\n  reg  [127:0] mem_q;\n\n  wire         ptr_addr_equal;\n  wire         write_valid;\n  wire         read_valid;\n\n  assign ptr_addr_equal = (wr_ptr[3:0] == rd_ptr[3:0]);\n\n  assign empty = ptr_addr_equal && (wr_ptr[4] == rd_ptr[4]);\n  assign full  = ptr_addr_equal && (wr_ptr[4] != rd_ptr[4]);\n\n  assign write_valid = wr_en && !full;\n  assign read_valid  = rd_en && !empty;\n\n  assign dout =\n      (rd_ptr[3:0] == 4'd0 ) ? mem_q[7:0]       :\n      (rd_ptr[3:0] == 4'd1 ) ? mem_q[15:8]      :\n      (rd_ptr[3:0] == 4'd2 ) ? mem_q[23:16]     :\n      (rd_ptr[3:0] == 4'd3 ) ? mem_q[31:24]     :\n      (rd_ptr[3:0] == 4'd4 ) ? mem_q[39:32]     :\n      (rd_ptr[3:0] == 4'd5 ) ? mem_q[47:40]     :\n      (rd_ptr[3:0] == 4'd6 ) ? mem_q[55:48]     :\n      (rd_ptr[3:0] == 4'd7 ) ? mem_q[63:56]     :\n      (rd_ptr[3:0] == 4'd8 ) ? mem_q[71:64]     :\n      (rd_ptr[3:0] == 4'd9 ) ? mem_q[79:72]     :\n      (rd_ptr[3:0] == 4'd10) ? mem_q[87:80]     :\n      (rd_ptr[3:0] == 4'd11) ? mem_q[95:88]     :\n      (rd_ptr[3:0] == 4'd12) ? mem_q[103:96]    :\n      (rd_ptr[3:0] == 4'd13) ? mem_q[111:104]   :\n      (rd_ptr[3:0] == 4'd14) ? mem_q[119:112]   :\n                               mem_q[127:120];\n\n  always @(posedge clk) begin\n    if (rst) begin\n      wr_ptr <= 5'd0;\n      rd_ptr <= 5'd0;\n    end else begin\n      if (write_valid)\n        wr_ptr <= wr_ptr + 5'd1;\n\n      if (read_valid)\n        rd_ptr <= rd_ptr + 5'd1;\n    end\n  end\n\n  always @(posedge clk) begin\n    if (write_valid) begin\n      case (wr_ptr[3:0])\n        4'd0:  mem_q[7:0]       <= din;\n        4'd1:  mem_q[15:8]      <= din;\n        4'd2:  mem_q[23:16]     <= din;\n        4'd3:  mem_q[31:24]     <= din;\n        4'd4:  mem_q[39:32]     <= din;\n        4'd5:  mem_q[47:40]     <= din;\n        4'd6:  mem_q[55:48]     <= din;\n        4'd7:  mem_q[63:56]     <= din;\n        4'd8:  mem_q[71:64]     <= din;\n        4'd9:  mem_q[79:72]     <= din;\n        4'd10: mem_q[87:80]     <= din;\n        4'd11: mem_q[95:88]     <= din;\n        4'd12: mem_q[103:96]    <= din;\n        4'd13: mem_q[111:104]   <= din;\n        4'd14: mem_q[119:112]   <= din;\n        4'd15: mem_q[127:120]   <= din;\n      endcase\n    end\n  end\n\nendmodule",
+  "attempts_used": 4
+}

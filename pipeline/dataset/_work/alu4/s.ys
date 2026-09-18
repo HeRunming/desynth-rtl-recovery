@@ -1,0 +1,4 @@
+read_verilog design.v
+hierarchy -top alu4
+proc; opt; techmap; opt; abc -g AND,OR,XOR,MUX; opt_clean
+stat

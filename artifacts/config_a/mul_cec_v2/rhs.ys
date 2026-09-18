@@ -1,0 +1,15 @@
+read_verilog -noautowire rhs.v
+hierarchy -check -top rhs
+proc
+flatten
+opt
+memory
+opt
+techmap
+opt
+check -assert
+aigmap
+opt_clean -purge
+check -assert
+write_aiger -symbols rhs.aig
+write_json rhs_mapped.json

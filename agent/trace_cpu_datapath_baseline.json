@@ -1,0 +1,16 @@
+{
+  "top": "cpu_datapath",
+  "mode": "baseline",
+  "attempts": [
+    {
+      "attempt": 1,
+      "verified": true,
+      "reason": "功能等价已证明",
+      "rtl": "module cpu_datapath(clk, rst, instr, acc, pc);\n  input        clk;\n  input        rst;\n  input  [7:0] instr;\n  output [7:0] acc;\n  output [3:0] pc;\n\n  reg [7:0] acc_reg;\n  reg [3:0] pc_reg;\n\n  wire [1:0] opcode;\n  wire [7:0] operand;\n  wire       jump_taken;\n\n  assign opcode  = instr[7:6];\n  assign operand = {2'b00, instr[5:0]};\n\n  assign jump_taken = (opcode == 2'b11) && (acc_reg != 8'b0);\n\n  always @(posedge clk) begin\n    if (rst) begin\n      acc_reg <= 8'b0;\n      pc_reg  <= 4'b0;\n    end else begin\n      case (opcode)\n        2'b00: begin\n          acc_reg <= operand;\n        end\n\n        2'b01: begin\n          acc_reg <= acc_reg + operand;\n        end\n\n        2'b10: begin\n          acc_reg <= acc_reg - operand;\n        end\n\n        2'b11: begin\n          acc_reg <= acc_reg;\n        end\n      endcase\n\n      if (jump_taken)\n        pc_reg <= instr[3:0];\n      else\n        pc_reg <= pc_reg + 4'd1;\n    end\n  end\n\n  assign acc = acc_reg;\n  assign pc  = pc_reg;\n\nendmodule",
+      "llm_seconds": 30.8
+    }
+  ],
+  "success": true,
+  "final_rtl": "module cpu_datapath(clk, rst, instr, acc, pc);\n  input        clk;\n  input        rst;\n  input  [7:0] instr;\n  output [7:0] acc;\n  output [3:0] pc;\n\n  reg [7:0] acc_reg;\n  reg [3:0] pc_reg;\n\n  wire [1:0] opcode;\n  wire [7:0] operand;\n  wire       jump_taken;\n\n  assign opcode  = instr[7:6];\n  assign operand = {2'b00, instr[5:0]};\n\n  assign jump_taken = (opcode == 2'b11) && (acc_reg != 8'b0);\n\n  always @(posedge clk) begin\n    if (rst) begin\n      acc_reg <= 8'b0;\n      pc_reg  <= 4'b0;\n    end else begin\n      case (opcode)\n        2'b00: begin\n          acc_reg <= operand;\n        end\n\n        2'b01: begin\n          acc_reg <= acc_reg + operand;\n        end\n\n        2'b10: begin\n          acc_reg <= acc_reg - operand;\n        end\n\n        2'b11: begin\n          acc_reg <= acc_reg;\n        end\n      endcase\n\n      if (jump_taken)\n        pc_reg <= instr[3:0];\n      else\n        pc_reg <= pc_reg + 4'd1;\n    end\n  end\n\n  assign acc = acc_reg;\n  assign pc  = pc_reg;\n\nendmodule",
+  "attempts_used": 1
+}

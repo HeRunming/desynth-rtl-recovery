@@ -1,0 +1,10 @@
+# 等价性检查：证明原始RTL和综合后网表功能完全一致
+read_verilog counter.v
+rename counter gold          # 原始RTL命名为 gold(金标准)
+read_verilog counter_netlist.v
+rename counter gate          # 网表命名为 gate
+proc
+equiv_make gold gate equiv   # 构造等价性检查模型
+hierarchy -top equiv
+equiv_simple                 # 尝试证明等价
+equiv_status -assert         # 断言：必须全部等价，否则报错

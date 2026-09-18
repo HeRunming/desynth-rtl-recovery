@@ -1,0 +1,602 @@
+[
+  {
+    "id": 23,
+    "width": 8,
+    "clusters": [
+      {
+        "bits": [
+          1,
+          2,
+          3,
+          4
+        ],
+        "size": 4,
+        "llm_guess": "4位数据寄存器/总线字段",
+        "signal_bases": {
+          "mem_rdata_q": 4
+        },
+        "purity": 1.0
+      },
+      {
+        "bits": [
+          0
+        ],
+        "size": 1,
+        "llm_guess": "宽向量归约/边界检测标志",
+        "signal_bases": {
+          "count_instr": 1
+        },
+        "purity": 1.0
+      },
+      {
+        "bits": [
+          5
+        ],
+        "size": 1,
+        "llm_guess": "另一组宽向量归约/边界检测标志",
+        "signal_bases": {
+          "count_cycle": 1
+        },
+        "purity": 1.0
+      },
+      {
+        "bits": [
+          6,
+          7
+        ],
+        "size": 2,
+        "llm_guess": "控制/算术状态逻辑",
+        "signal_bases": {
+          "reg_next_pc": 1,
+          "pcpi_rs2": 1
+        },
+        "purity": 0.5
+      }
+    ]
+  },
+  {
+    "id": 29,
+    "width": 13,
+    "clusters": [
+      {
+        "bits": [
+          0,
+          1,
+          2,
+          3
+        ],
+        "size": 4,
+        "llm_guess": "简单状态/标志位集合",
+        "signal_bases": {
+          "is_lui_auipc_jal": 1,
+          "is_slti_blt_slt": 1,
+          "is_sltiu_bltu_sltu": 1,
+          "is_lbu_lhu_lw": 1
+        },
+        "purity": 0.25
+      },
+      {
+        "bits": [
+          4
+        ],
+        "size": 1,
+        "llm_guess": "独立控制/条件位",
+        "signal_bases": {
+          "count_cycle": 1
+        },
+        "purity": 1.0
+      },
+      {
+        "bits": [
+          5,
+          6,
+          7,
+          8,
+          9,
+          10,
+          11,
+          12
+        ],
+        "size": 8,
+        "llm_guess": "共享使能的数据通路/状态编码寄存器",
+        "signal_bases": {
+          "instr_lui": 1,
+          "instr_auipc": 1,
+          "instr_jal": 1,
+          "is_lb_lh_lw_lbu_lhu": 1,
+          "is_sb_sh_sw": 1,
+          "is_beq_bne_blt_bge_bltu_bgeu": 1,
+          "is_alu_reg_imm": 1,
+          "is_alu_reg_reg": 1
+        },
+        "purity": 0.12
+      }
+    ]
+  },
+  {
+    "id": 11,
+    "width": 30,
+    "clusters": [
+      {
+        "bits": [
+          0
+        ],
+        "size": 1,
+        "llm_guess": "独立控制/状态位或特殊标志位",
+        "signal_bases": {
+          "reg_out": 1
+        },
+        "purity": 1.0
+      },
+      {
+        "bits": [
+          1,
+          2,
+          3,
+          4,
+          5
+        ],
+        "size": 5,
+        "llm_guess": "小宽度字段或低位数据/索引寄存器",
+        "signal_bases": {
+          "pcpi_rs2": 5
+        },
+        "purity": 1.0
+      },
+      {
+        "bits": [
+          6,
+          7,
+          8,
+          9,
+          10,
+          11,
+          12,
+          13,
+          14,
+          15,
+          16,
+          17,
+          18,
+          19,
+          20,
+          21,
+          22,
+          23,
+          24,
+          25,
+          26,
+          27,
+          28,
+          29
+        ],
+        "size": 24,
+        "llm_guess": "宽数据寄存器/数据通路字段",
+        "signal_bases": {
+          "pcpi_rs2": 24
+        },
+        "purity": 1.0
+      }
+    ]
+  },
+  {
+    "id": 25,
+    "width": 10,
+    "clusters": [
+      {
+        "bits": [
+          1,
+          2,
+          3,
+          4,
+          5
+        ],
+        "size": 5,
+        "llm_guess": "5位并行寄存器/数据字段加载保持单元",
+        "signal_bases": {
+          "mem_rdata_q": 5
+        },
+        "purity": 1.0
+      },
+      {
+        "bits": [
+          0,
+          6
+        ],
+        "size": 2,
+        "llm_guess": "宽位条件归约/计数终端检测标志",
+        "signal_bases": {
+          "count_instr": 1,
+          "count_cycle": 1
+        },
+        "purity": 0.5
+      },
+      {
+        "bits": [
+          7
+        ],
+        "size": 1,
+        "llm_guess": "算术/计数数据通路位或进位链逻辑",
+        "signal_bases": {
+          "reg_next_pc": 1
+        },
+        "purity": 1.0
+      },
+      {
+        "bits": [
+          8,
+          9
+        ],
+        "size": 2,
+        "llm_guess": "控制状态/译码条件生成逻辑",
+        "signal_bases": {
+          "pcpi_rs1": 1,
+          "pcpi_rs2": 1
+        },
+        "purity": 0.5
+      }
+    ]
+  },
+  {
+    "id": 5,
+    "width": 19,
+    "clusters": [
+      {
+        "bits": [
+          0
+        ],
+        "size": 1,
+        "llm_guess": "独立计数/比较条件标志位",
+        "signal_bases": {
+          "count_cycle": 1
+        },
+        "purity": 1.0
+      },
+      {
+        "bits": [
+          1
+        ],
+        "size": 1,
+        "llm_guess": "独立控制/状态标志位",
+        "signal_bases": {
+          "latched_stalu": 1
+        },
+        "purity": 1.0
+      },
+      {
+        "bits": [
+          2
+        ],
+        "size": 1,
+        "llm_guess": "独立组合状态/异常条件标志位",
+        "signal_bases": {
+          "is_lui_auipc_jal_jalr_addi_add_sub": 1
+        },
+        "purity": 1.0
+      },
+      {
+        "bits": [
+          3,
+          4,
+          5,
+          6,
+          7,
+          8,
+          9,
+          10
+        ],
+        "size": 8,
+        "llm_guess": "8位数据寄存器/低字节通路",
+        "signal_bases": {
+          "dbg_mem_wdata": 8
+        },
+        "purity": 1.0
+      },
+      {
+        "bits": [
+          11,
+          12,
+          13,
+          14,
+          15,
+          16,
+          17,
+          18
+        ],
+        "size": 8,
+        "llm_guess": "8位数据寄存器/高字节或相关并行通路",
+        "signal_bases": {
+          "dbg_mem_wdata": 8
+        },
+        "purity": 1.0
+      }
+    ]
+  },
+  {
+    "id": 18,
+    "width": 9,
+    "clusters": [
+      {
+        "bits": [
+          0,
+          1
+        ],
+        "size": 2,
+        "llm_guess": "宽位向量归约/比较类状态位",
+        "signal_bases": {
+          "count_instr": 1,
+          "count_cycle": 1
+        },
+        "purity": 0.5
+      },
+      {
+        "bits": [
+          2
+        ],
+        "size": 1,
+        "llm_guess": "复杂条件比较/控制状态位",
+        "signal_bases": {
+          "reg_next_pc": 1
+        },
+        "purity": 1.0
+      },
+      {
+        "bits": [
+          3,
+          4,
+          5,
+          6,
+          7,
+          8
+        ],
+        "size": 6,
+        "llm_guess": "6 位并行寄存器/数据通路 MUX",
+        "signal_bases": {
+          "mem_rdata_q": 6
+        },
+        "purity": 1.0
+      }
+    ]
+  },
+  {
+    "id": 30,
+    "width": 12,
+    "clusters": [
+      {
+        "bits": [
+          0
+        ],
+        "size": 1,
+        "llm_guess": "独立的算术/组合结果位",
+        "signal_bases": {
+          "alu_out_q": 1
+        },
+        "purity": 1.0
+      },
+      {
+        "bits": [
+          1,
+          2,
+          3,
+          4,
+          5
+        ],
+        "size": 5,
+        "llm_guess": "同一多位数据字段/寄存器的 mux 更新逻辑",
+        "signal_bases": {
+          "decoded_imm": 5
+        },
+        "purity": 1.0
+      },
+      {
+        "bits": [
+          6,
+          7
+        ],
+        "size": 2,
+        "llm_guess": "net_413 使能的宽条件检测/终端条件标志",
+        "signal_bases": {
+          "count_instr": 1,
+          "count_cycle": 1
+        },
+        "purity": 0.5
+      },
+      {
+        "bits": [
+          8,
+          9,
+          10,
+          11
+        ],
+        "size": 4,
+        "llm_guess": "4 位状态/计数器/小型编码字段",
+        "signal_bases": {
+          "dbg_mem_wstrb": 4
+        },
+        "purity": 1.0
+      }
+    ]
+  },
+  {
+    "id": 24,
+    "width": 16,
+    "clusters": [
+      {
+        "bits": [
+          0
+        ],
+        "size": 1,
+        "llm_guess": "独立组合运算/进位或比较相关位",
+        "signal_bases": {
+          "alu_out_q": 1
+        },
+        "purity": 1.0
+      },
+      {
+        "bits": [
+          1,
+          2
+        ],
+        "size": 2,
+        "llm_guess": "状态/计数器边界检测或归约条件位",
+        "signal_bases": {
+          "count_instr": 1,
+          "count_cycle": 1
+        },
+        "purity": 0.5
+      },
+      {
+        "bits": [
+          3,
+          4,
+          5
+        ],
+        "size": 3,
+        "llm_guess": "小型控制字段或状态字段",
+        "signal_bases": {
+          "instr_slli": 1,
+          "instr_srli": 1,
+          "instr_srai": 1
+        },
+        "purity": 0.33
+      },
+      {
+        "bits": [
+          6,
+          7,
+          8,
+          9,
+          10,
+          11,
+          12,
+          13,
+          14,
+          15
+        ],
+        "size": 10,
+        "llm_guess": "一组 one-hot/译码装载寄存器位",
+        "signal_bases": {
+          "instr_add": 1,
+          "instr_sub": 1,
+          "instr_sll": 1,
+          "instr_slt": 1,
+          "instr_sltu": 1,
+          "instr_xor": 1,
+          "instr_srl": 1,
+          "instr_sra": 1,
+          "instr_or": 1,
+          "instr_and": 1
+        },
+        "purity": 0.1
+      }
+    ]
+  },
+  {
+    "id": 28,
+    "width": 15,
+    "clusters": [
+      {
+        "bits": [
+          0
+        ],
+        "size": 1,
+        "llm_guess": "单比特状态/标志位，可能是同一控制译码下的 toggle/奇偶或进位类标志",
+        "signal_bases": {
+          "count_instr": 1
+        },
+        "purity": 1.0
+      },
+      {
+        "bits": [
+          1
+        ],
+        "size": 1,
+        "llm_guess": "独立条件检测/归约标志位",
+        "signal_bases": {
+          "count_cycle": 1
+        },
+        "purity": 1.0
+      },
+      {
+        "bits": [
+          2,
+          3,
+          4,
+          5,
+          6
+        ],
+        "size": 5,
+        "llm_guess": "5 位数据寄存器/小型字段，带条件保持与条件装载",
+        "signal_bases": {
+          "latched_rd": 5
+        },
+        "purity": 1.0
+      },
+      {
+        "bits": [
+          7,
+          8,
+          9,
+          10,
+          11,
+          12,
+          13,
+          14
+        ],
+        "size": 8,
+        "llm_guess": "8 位多路选择装载寄存器/数据总线字段",
+        "signal_bases": {
+          "dbg_mem_wdata": 8
+        },
+        "purity": 1.0
+      }
+    ]
+  },
+  {
+    "id": 21,
+    "width": 9,
+    "clusters": [
+      {
+        "bits": [
+          1,
+          2,
+          3,
+          4,
+          5
+        ],
+        "size": 5,
+        "llm_guess": "5位并行数据寄存器/总线字段选择",
+        "signal_bases": {
+          "mem_rdata_q": 5
+        },
+        "purity": 1.0
+      },
+      {
+        "bits": [
+          0,
+          6,
+          7
+        ],
+        "size": 3,
+        "llm_guess": "复杂算术/计数器进位或条件更新逻辑",
+        "signal_bases": {
+          "count_instr": 1,
+          "count_cycle": 1,
+          "reg_next_pc": 1
+        },
+        "purity": 0.33
+      },
+      {
+        "bits": [
+          8
+        ],
+        "size": 1,
+        "llm_guess": "查表/多路选择输出或独立控制字段",
+        "signal_bases": {
+          "pcpi_rs2": 1
+        },
+        "purity": 1.0
+      }
+    ]
+  }
+]

@@ -1,0 +1,22 @@
+EQUIV picorv32_lift: 0 mismatches / 53820 checks (3000 cycles, 0 all-X checks skipped)
+---- per-signal breakdown ----
+  ok   trap          
+  ok   mem_valid     
+  ok   mem_instr     
+  ok   mem_addr      
+  ok   mem_wdata     
+  ok   mem_wstrb     
+  ok   mem_la_read   
+  ok   mem_la_write  
+  ok   mem_la_addr   
+  ok   mem_la_wdata  
+  ok   mem_la_wstrb  
+  ok   pcpi_valid    
+  ok   pcpi_insn     
+  ok   pcpi_rs1      
+  ok   pcpi_rs2      
+  ok   eoi           
+  ok   trace_valid   
+  ok   trace_data    
+SOURCE_INTERNAL bits=2313 cycles=3000 errors=0 checks=6939000
+/data/hrm/desynth/work/big/tb_source_internal.v:217: $finish called at 30047000 (1ps)

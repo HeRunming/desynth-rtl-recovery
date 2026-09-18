@@ -1,0 +1,4 @@
+INTERNAL picorv32_lift: 2/171 regs diverged (3000 cycles)
+  DIVERGE cyc0  control_state_5  raw=xxxxxxx lift=0000000
+  DIVERGE cyc0  unnamed_27075  raw=xxX0000000 lift=0000000000
+tb_int_big.v:383: $finish called at 30096000 (1ps)
