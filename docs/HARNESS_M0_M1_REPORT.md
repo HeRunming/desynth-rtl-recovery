@@ -11,6 +11,7 @@
 - `harness/recovery.py`：只允许匹配 candidate hash 的 `proven` 候选进入新 revision；拒绝重叠 region；支持 rollback；导出完整 source graph、semantic overlay 和 ownership manifest。
 - `harness/state.py`：从 Yosys `$dff/$adff/$dffe/$adffe` 提取 clock edge、异步 reset 和 enable；未知 latch/tri-state/时序 primitive 进入 `unsupported`，不被猜测为单一 posedge 模型。
 - `harness/cli.py`：`summary`、`anonymize`、`detect`、`recover` 四个最小命令。
+- `scripts/evaluate_harness_m1.py`：对多个 Yosys JSON 输入按固定匿名 seed 重跑发现、证明、事务集成和 residual 指标，保存机器可读报告。
 
 这不是完整 RTL 行为 emitter，也没有声称已经支持任意 cell library、时钟/复位、latch、memory 或顺序等价。当前 recovery export 的正确性保证来自“完整 source graph + overlay”，而非把未恢复区域伪装成高层 RTL。
 
@@ -29,7 +30,7 @@
 
 当前仓库原有 `tests/test_repair_gate.py` 也继续通过。总计 **11 tests passed**。
 
-另外使用 Yosys 将真实 `examples/counter/counter_netlist.v` 归一化后完成导入摘要和匿名化 smoke：38 cells、8 state cells、4 ports；匿名 public JSON 不含 `counter/count/enable/rst` 等原始名字。它还没有进入 full-adder detector，因为该设计没有对应组合 motif；这正是“可报告的未恢复 residual”，不是失败后丢逻辑。
+另外使用 Yosys 将真实设计归一化后完成导入摘要和匿名化 smoke：`counter` 为 38 cells/8 state cells，`traffic` 为 66/10，`alu8` 为 235/0。匿名 public JSON 不含 `counter/count/enable/rst` 等原始名字。`counter`/`traffic` 没有 full-adder 候选；`alu8` 发现并穷举证明 3 个候选，接受 15 个 cell，保留 220 个 residual cell，ownership 闭合。这是可报告的 M1 结果，不是对全设计语义的声称。
 
 ## 当前已知限制
 
